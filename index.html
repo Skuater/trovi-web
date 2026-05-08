@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trovi — Optimización de gastos para comunidades de propietarios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --green: #0F6E56;
+  --green-dark: #085041;
+  --green-light: #E1F5EE;
+  --green-mid: #1D9E75;
+  --green-border: #9FE1CB;
+  --amber: #854F0B;
+  --amber-light: #FAEEDA;
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --gray-900: #1A1A18;
+  --gray-700: #3D3D3A;
+  --gray-500: #6B6B67;
+  --gray-300: #C8C8C2;
+  --gray-100: #F4F2EB;
+  --gray-50: #FAFAF7;
+  --white: #FFFFFF;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--gray-50);
+  color: var(--gray-900);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.fade-up { animation: fadeUp 0.7s cubic-bezier(.22,.68,0,1.2) both; }
+.fade-up-1 { animation-delay: 0.1s; }
+.fade-up-2 { animation-delay: 0.22s; }
+.fade-up-3 { animation-delay: 0.34s; }
+.fade-up-4 { animation-delay: 0.46s; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,247,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-300);
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-mark {
+  width: 32px; height: 32px;
+  background: var(--green);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-mark i { font-size: 18px; color: var(--white); }
+.nav-logo-text {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--gray-900);
+  letter-spacing: -0.3px;
+}
+
+.nav-center {
+  display: flex; align-items: center; gap: 32px;
+}
+.nav-link {
+  font-size: 14px; font-weight: 400;
+  color: var(--gray-500);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-link:hover { color: var(--green); }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+
+.lang-switcher {
+  display: flex; gap: 2px;
+  background: var(--gray-100);
+  border-radius: 8px;
+  padding: 3px;
+}
+.lang-btn {
+  font-size: 11px; font-weight: 500;
+  padding: 4px 10px;
+  border: none; background: transparent;
+  border-radius: 6px;
+  color: var(--gray-500);
+  cursor: pointer;
+  transition: all .2s;
+}
+.lang-btn.active {
+  background: var(--white);
+  color: var(--green);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.btn-nav {
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px;
+  background: var(--green);
+  color: var(--white);
+  border: none; border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-nav:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+.btn-acceder {
+  font-size: 13px; font-weight: 500;
+  padding: 8px 18px;
+  background: transparent;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-300); border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: border-color .2s, color .2s, transform .15s;
+}
+.btn-acceder:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  padding: 96px 40px 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 64px;
+  align-items: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500;
+  color: var(--green);
+  background: var(--green-light);
+  padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 24px;
+  letter-spacing: 0.02em;
+}
+.hero-eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-mid);
+  animation: pulse-dot 2s infinite;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 52px;
+  line-height: 1.12;
+  letter-spacing: -1px;
+  color: var(--gray-900);
+  margin-bottom: 20px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--gray-500);
+  line-height: 1.65;
+  margin-bottom: 36px;
+  max-width: 440px;
+}
+
+.hero-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 15px; font-weight: 500;
+  border: none; border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 14px rgba(15,110,86,.3);
+}
+.btn-primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15,110,86,.35);
+}
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  background: var(--white);
+  color: var(--gray-700);
+  font-size: 15px; font-weight: 400;
+  border: 1px solid var(--gray-300); border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .2s, transform .15s;
+}
+.btn-secondary:hover {
+  border-color: var(--green);
+  color: var(--green);
+  transform: translateY(-1px);
+}
+
+.hero-proof {
+  display: flex; gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--gray-300);
+}
+.proof-item {}
+.proof-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--green);
+  line-height: 1;
+}
+.proof-lbl {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 4px;
+  max-width: 100px;
+  line-height: 1.3;
+}
+
+/* ── HERO CARD ── */
+.hero-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0,0,0,0.04);
+  position: relative;
+}
+
+.hero-card-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.hch-dot { width: 10px; height: 10px; border-radius: 50%; }
+.hch-dot-r { background: #FF5F57; }
+.hch-dot-y { background: #FFBD2E; }
+.hch-dot-g { background: #27C93F; }
+.hch-title {
+  font-size: 13px; font-weight: 500;
+  color: var(--gray-500);
+  margin-left: auto;
+}
+
+.card-community {
+  font-size: 14px; font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+.card-address {
+  font-size: 12px; color: var(--gray-500);
+  margin-bottom: 20px;
+}
+
+.card-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.cs-item {
+  background: var(--gray-50);
+  border-radius: 8px;
+  padding: 12px;
+}
+.cs-label { font-size: 11px; color: var(--gray-500); margin-bottom: 4px; }
+.cs-value { font-size: 18px; font-weight: 500; color: var(--gray-900); }
+.cs-value.green { color: var(--green); }
+.cs-value.amber { color: var(--amber); }
+
+.card-partidas { display: flex; flex-direction: column; gap: 8px; }
+.partida-row {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px;
+}
+.partida-name { flex: 1; color: var(--gray-700); }
+.partida-bar {
+  flex: 2;
+  height: 5px;
+  background: var(--gray-100);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.partida-fill { height: 100%; border-radius: 3px; }
+.partida-amount { font-size: 11px; color: var(--gray-500); min-width: 52px; text-align: right; }
+
+/* ── SECCIÓN GENÉRICA ── */
+.section { padding: 80px 40px; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500;
+  color: var(--green);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.section-tag i { font-size: 14px; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  color: var(--gray-900);
+  margin-bottom: 12px;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--gray-500);
+  max-width: 520px;
+  line-height: 1.65;
+}
+
+/* ── CÓMO FUNCIONA ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-top: 48px;
+  background: var(--gray-300);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.step-card {
+  background: var(--white);
+  padding: 28px 24px;
+  position: relative;
+}
+.step-card:first-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+.step-card:last-child { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+
+.step-num {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--green-light);
+  color: var(--green);
+  font-size: 15px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+}
+.step-title {
+  font-size: 15px; font-weight: 500;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.step-desc {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.55;
+}
+.step-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px;
+  color: var(--green);
+  background: var(--green-light);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-top: 12px;
+}
+
+/* ── FEATURES ── */
+.features-section {
+  background: var(--gray-900);
+  padding: 80px 40px;
+}
+.features-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.features-inner .section-tag { color: var(--green-mid); }
+.features-inner .section-title { color: var(--white); }
+.features-inner .section-sub { color: rgba(255,255,255,.5); }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 48px;
+  background: rgba(255,255,255,.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.feat-card {
+  background: rgba(255,255,255,.03);
+  padding: 28px 24px;
+  transition: background .2s;
+}
+.feat-card:hover { background: rgba(255,255,255,.07); }
+
+.feat-icon {
+  width: 40px; height: 40px;
+  background: rgba(15,110,86,.3);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.feat-icon i { font-size: 20px; color: var(--green-mid); }
+.feat-title {
+  font-size: 15px; font-weight: 500;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.feat-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,.45);
+  line-height: 1.55;
+}
+
+/* ── PRECIOS ── */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 48px;
+  max-width: 800px;
+}
+.price-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid var(--gray-300);
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+.price-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.08);
+}
+.price-card.featured {
+  border: 2px solid var(--green);
+  position: relative;
+}
+.price-featured-tag {
+  position: absolute;
+  top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--green);
+  color: var(--white);
+  font-size: 11px; font-weight: 500;
+  padding: 4px 16px; border-radius: 20px;
+  white-space: nowrap;
+}
+.price-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+}
+.price-desc {
+  font-size: 13px; color: var(--gray-500);
+  margin-bottom: 24px; line-height: 1.5;
+}
+.price-amount {
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+.price-amount span {
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 400;
+  color: var(--gray-500);
+}
+.price-note {
+  font-size: 12px; color: var(--green);
+  margin-bottom: 24px;
+}
+.price-divider {
+  height: 1px; background: var(--gray-100);
+  margin-bottom: 20px;
+}
+.price-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.price-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: 13px; color: var(--gray-700);
+}
+.price-item i { font-size: 15px; color: var(--green); margin-top: 1px; flex-shrink: 0; }
+
+.btn-price-main {
+  width: 100%; padding: 12px;
+  background: var(--green); color: var(--white);
+  font-size: 14px; font-weight: 500;
+  border: none; border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-price-main:hover { background: var(--green-dark); }
+.btn-price-sec {
+  width: 100%; padding: 12px;
+  background: transparent; color: var(--gray-700);
+  font-size: 14px; font-weight: 400;
+  border: 1px solid var(--gray-300); border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-price-sec:hover { border-color: var(--green); color: var(--green); }
+
+/* ── TESTIMONIO ── */
+.testimonial-section {
+  background: var(--green-light);
+  padding: 80px 40px;
+}
+.test-inner {
+  max-width: 760px; margin: 0 auto; text-align: center;
+}
+.test-quote-mark {
+  font-family: var(--font-display);
+  font-size: 80px; line-height: 0.8;
+  color: var(--green-border);
+  margin-bottom: 16px;
+  display: block;
+}
+.test-quote {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--green-dark);
+  line-height: 1.45;
+  font-style: italic;
+  margin-bottom: 32px;
+}
+.test-author { display: flex; align-items: center; gap: 14px; justify-content: center; }
+.test-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 18px; color: var(--white);
+}
+.test-name { font-size: 15px; font-weight: 500; color: var(--green-dark); }
+.test-role { font-size: 12px; color: var(--green); }
+.test-result {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 14px; font-weight: 500;
+  padding: 10px 22px; border-radius: 20px;
+  margin-top: 32px;
+}
+
+/* ── CTA FINAL ── */
+.cta-section {
+  padding: 96px 40px;
+  text-align: center;
+}
+.cta-inner { max-width: 580px; margin: 0 auto; }
+.cta-title {
+  font-family: var(--font-display);
+  font-size: 42px; line-height: 1.15;
+  letter-spacing: -0.5px;
+  color: var(--gray-900);
+  margin-bottom: 14px;
+}
+.cta-sub {
+  font-size: 16px; color: var(--gray-500);
+  margin-bottom: 36px; line-height: 1.6;
+}
+.cta-form {
+  display: flex; gap: 10px; max-width: 440px; margin: 0 auto 14px;
+}
+.cta-input {
+  flex: 1; padding: 12px 18px;
+  border: 1px solid var(--gray-300); border-radius: var(--radius);
+  background: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px; color: var(--gray-900);
+  outline: none;
+  transition: border-color .2s;
+}
+.cta-input:focus { border-color: var(--green); }
+.cta-note { font-size: 12px; color: var(--gray-500); }
+
+/* ── FORMULARIO DE CONTACTO ── */
+.contact-form-wrap {
+  max-width: 580px;
+  margin: 0 auto;
+  text-align: left;
+}
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label {
+  font-size: 13px; font-weight: 500;
+  color: var(--gray-700);
+}
+.form-input {
+  padding: 11px 16px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px; color: var(--gray-900);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+}
+.form-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(15,110,86,.1);
+}
+.form-input.invalid { border-color: #E24B4A; }
+.form-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6B67' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-error {
+  font-size: 12px; color: #A32D2D;
+  display: none;
+}
+.form-error.visible { display: block; }
+.btn-submit {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 13px;
+  background: var(--green); color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 500;
+  border: none; border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 14px rgba(15,110,86,.3);
+  margin-top: 4px;
+}
+.btn-submit:hover { background: var(--green-dark); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+.form-legal {
+  font-size: 12px; color: var(--gray-500);
+  text-align: center; line-height: 1.5;
+}
+.form-success {
+  text-align: center;
+  padding: 48px 24px;
+}
+.success-icon {
+  font-size: 52px; color: var(--green);
+  margin-bottom: 16px;
+}
+.success-title {
+  font-family: var(--font-display);
+  font-size: 26px; color: var(--gray-900);
+  margin-bottom: 10px;
+}
+.success-text {
+  font-size: 15px; color: var(--gray-500);
+  line-height: 1.6; margin-bottom: 28px;
+  max-width: 400px; margin-left: auto; margin-right: auto;
+}
+.form-error-box {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px;
+  background: #FCEBEB;
+  border-radius: var(--radius);
+  font-size: 13px; color: #A32D2D;
+  margin-top: 12px;
+}
+.form-error-box i { font-size: 18px; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--gray-900);
+  padding: 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.footer-logo-mark {
+  width: 28px; height: 28px;
+  background: var(--green);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+.footer-logo-mark i { font-size: 15px; color: var(--white); }
+.footer-logo-text {
+  font-family: var(--font-display);
+  font-size: 17px; color: var(--white);
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.3); }
+.footer-links { display: flex; gap: 20px; }
+.footer-link {
+  font-size: 12px; color: rgba(255,255,255,.35);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-link:hover { color: rgba(255,255,255,.7); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-card { display: none; }
+  .hero-title { font-size: 38px; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  nav { padding: 0 20px; }
+  .nav-center { display: none; }
+  .section { padding: 60px 20px; }
+  footer { flex-direction: column; gap: 20px; text-align: center; }
+}
+</style>
+<meta name="description" content="Trovi audita los contratos de tu comunidad de propietarios y consigue un ahorro real. Solo cobramos si ahorramos — el 30% del ahorro conseguido.">
+<meta name="keywords" content="optimización gastos comunidad propietarios, auditoría contratos comunidad, ahorro comunidad vecinos, administrador fincas">
+<meta property="og:title" content="Trovi — Optimización de gastos para comunidades">
+<meta property="og:description" content="Auditamos los contratos de tu comunidad y conseguimos ahorro real. Sin coste si no hay resultado.">
+<meta property="og:url" content="https://trovi.es">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://trovi.es">
+</head>
+<body>
+
+<!-- ── NAVEGACIÓN ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <span class="nav-logo-text">Trovi</span>
+  </a>
+  <div class="nav-center">
+    <a href="#como-funciona" class="nav-link" data-i18n="nav.how">Cómo funciona</a>
+    <a href="#software" class="nav-link" data-i18n="nav.software">Software</a>
+    <a href="#precios" class="nav-link" data-i18n="nav.pricing">Precios</a>
+    <a href="#contacto" class="nav-link" data-i18n="nav.contact">Contacto</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('ca')">CA</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="#contacto" class="btn-nav">
+      <i class="ti ti-arrow-right"></i>
+      <span data-i18n="nav.cta">Solicitar auditoría</span>
+    </a>
+    <a href="/login" class="btn-acceder">
+      <i class="ti ti-lock"></i>
+      <span data-i18n="nav.login">Acceder</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section style="background: var(--white);">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow fade-up">
+        <span class="hero-eyebrow-dot"></span>
+        <span data-i18n="hero.badge">Caso real: 6.000€ ahorrados en Salou</span>
+      </div>
+      <h1 class="hero-title fade-up fade-up-1">
+        <span data-i18n="hero.title1">Tu comunidad</span><br>
+        <em data-i18n="hero.title2">paga de más.</em><br>
+        <span data-i18n="hero.title3">Nosotros lo demostramos.</span>
+      </h1>
+      <p class="hero-sub fade-up fade-up-2" data-i18n="hero.sub">
+        Auditamos los contratos de tu comunidad de propietarios y conseguimos un ahorro real. Solo cobramos si ahorramos — el 30% de lo que consigues.
+      </p>
+      <div class="hero-actions fade-up fade-up-3">
+        <a href="#contacto" class="btn-primary">
+          <i class="ti ti-arrow-right"></i>
+          <span data-i18n="hero.cta1">Solicitar auditoría gratuita</span>
+        </a>
+        <a href="#software" class="btn-secondary">
+          <span data-i18n="hero.cta2">Ver el software</span>
+        </a>
+      </div>
+      <div class="hero-proof fade-up fade-up-4">
+        <div class="proof-item">
+          <div class="proof-num">15%</div>
+          <div class="proof-lbl" data-i18n="hero.proof1">Ahorro medio conseguido</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num">0€</div>
+          <div class="proof-lbl" data-i18n="hero.proof2">Sin ahorro no se cobra</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-num">48 horas</div>
+          <div class="proof-lbl" data-i18n="hero.proof3">Primer informe entregado</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative;">
+      <div class="hero-card fade-up fade-up-2">
+        <div class="hero-card-header">
+          <div class="hch-dot hch-dot-r"></div>
+          <div class="hch-dot hch-dot-y"></div>
+          <div class="hch-dot hch-dot-g"></div>
+          <div class="hch-title">Auditoría · Comunidad Tarragona</div>
+        </div>
+        <div class="card-community">Comunidad de propietarios</div>
+        <div class="card-address">28 viviendas · Tarragona</div>
+        <div class="card-stats">
+          <div class="cs-item">
+            <div class="cs-label">Presupuesto anual</div>
+            <div class="cs-value">40.000€</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-label">Ahorro detectado</div>
+            <div class="cs-value green">6.300€</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-label">% de ahorro</div>
+            <div class="cs-value green">15,7%</div>
+          </div>
+          <div class="cs-item">
+            <div class="cs-label">Contratos revisados</div>
+            <div class="cs-value">7 / 7</div>
+          </div>
+        </div>
+        <div style="background:var(--gray-50);border-radius:8px;padding:14px 16px;margin-top:4px;">
+          <div style="font-size:12px;font-weight:500;color:var(--gray-700);margin-bottom:10px;">Resultado de la auditoría</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:12px;color:var(--gray-500);">Gasto antes de la auditoría</span>
+            <span style="font-size:13px;font-weight:500;color:var(--gray-700);">40.000€</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:12px;color:var(--gray-500);">Gasto tras la optimización</span>
+            <span style="font-size:13px;font-weight:500;color:var(--green);">33.700€</span>
+          </div>
+          <div style="height:1px;background:var(--gray-300);margin:10px 0;"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;font-weight:500;color:var(--gray-900);">Ahorro anual garantizado</span>
+            <span style="font-size:16px;font-weight:500;color:var(--green);">6.300€</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CÓMO FUNCIONA ── -->
+<section class="section" id="como-funciona">
+  <div class="section-inner">
+    <div class="section-tag"><i class="ti ti-list-check"></i><span data-i18n="how.tag">Cómo funciona</span></div>
+    <h2 class="section-title" data-i18n="how.title">De 0 a ahorro en 4 pasos</h2>
+    <p class="section-sub" data-i18n="how.sub">Sin burocracia. Sin riesgo. Sin coste si no hay resultado.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title" data-i18n="how.s1t">Nos envías el presupuesto anual</div>
+        <div class="step-desc" data-i18n="how.s1d">Solo el acta o presupuesto de tu comunidad. En 48h te decimos si hay margen de mejora — sin compromiso.</div>
+        <div class="step-tag"><i class="ti ti-upload"></i><span data-i18n="how.s1tag">Gratis y sin compromiso</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title" data-i18n="how.s2t">Auditamos todos los contratos</div>
+        <div class="step-desc" data-i18n="how.s2d">Revisamos limpieza, ascensor, seguro, electricidad y jardinería. Pedimos presupuestos alternativos reales del mercado.</div>
+        <div class="step-tag"><i class="ti ti-robot"></i><span data-i18n="how.s2tag">IA + revisión humana</span></div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title" data-i18n="how.s3t">Te entregamos el informe</div>
+        <div class="step-desc" data-i18n="how.s3d">Documento detallado por partida: cuánto pagas, cuánto podrías pagar, y con qué proveedor. Listo para presentar a la junta.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-title" data-i18n="how.s4t">Solo pagas si ahorras</div>
+        <div class="step-desc" data-i18n="how.s4d">Nuestro cobro es el 30% del ahorro anual conseguido. Si no hay ahorro, no hay factura. Sin letra pequeña.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOFTWARE FEATURES ── -->
+<section class="features-section" id="software">
+  <div class="features-inner">
+    <div class="section-tag"><i class="ti ti-layout-dashboard"></i><span data-i18n="feat.tag">El software</span></div>
+    <h2 class="section-title" data-i18n="feat.title">La plataforma que gestiona todo</h2>
+    <p class="section-sub" data-i18n="feat.sub">Para administradores de fincas que quieren ofrecer optimización de costes a sus comunidades.</p>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ti ti-file-text"></i></div>
+        <div class="feat-title" data-i18n="feat.f1t">OCR + análisis con IA</div>
+        <div class="feat-desc" data-i18n="feat.f1d">Sube el acta en PDF y la IA detecta automáticamente todas las partidas de gasto con su peso porcentual.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ti ti-checklist"></i></div>
+        <div class="feat-title" data-i18n="feat.f2t">Expediente por comunidad</div>
+        <div class="feat-desc" data-i18n="feat.f2d">Toda la documentación, contratos y comparativas organizados en un expediente digital por comunidad.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ti ti-calendar"></i></div>
+        <div class="feat-title" data-i18n="feat.f3t">Alertas de vencimientos</div>
+        <div class="feat-desc" data-i18n="feat.f3d">Aviso automático 90 días antes de que venza cada contrato para no perder ninguna oportunidad.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ti ti-chart-bar"></i></div>
+        <div class="feat-title" data-i18n="feat.f5t">Histórico de ahorros</div>
+        <div class="feat-desc" data-i18n="feat.f5d">Muestra a cada comunidad cuánto ha ahorrado año a año. El mejor argumento de renovación que existe.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ti ti-file-export"></i></div>
+        <div class="feat-title" data-i18n="feat.f7t">Informes exportables</div>
+        <div class="feat-desc" data-i18n="feat.f7d">Genera el informe final en PDF o Word con un clic. Listo para presentar en junta, con firma digital.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="ti ti-lock"></i></div>
+        <div class="feat-title" data-i18n="feat.f6t">Acceso seguro por roles</div>
+        <div class="feat-desc" data-i18n="feat.f6d">Cada usuario accede solo a lo que le corresponde. Historial de actividad y control total desde el panel de administración.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRECIOS ── -->
+<section class="section" id="precios" style="background:var(--gray-50);">
+  <div class="section-inner">
+    <div class="section-tag"><i class="ti ti-coin"></i><span data-i18n="price.tag">Precios</span></div>
+    <h2 class="section-title" data-i18n="price.title">Modelo de cobro</h2>
+    <p class="section-sub" data-i18n="price.sub">Sin letra pequeña. Solo pagáis si conseguimos un ahorro real.</p>
+    <div class="pricing-grid" style="max-width:580px;">
+      <div class="price-card" style="grid-column:1/-1;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+          <div>
+            <div class="price-name" data-i18n="price.c1name">Auditoría de comunidad</div>
+            <div class="price-desc" data-i18n="price.c1desc">Para comunidades de propietarios y administradores de fincas que quieren optimizar sus gastos.</div>
+            <div class="price-amount">0€ <span data-i18n="price.c1until">hasta conseguir ahorro</span></div>
+            <div class="price-note" data-i18n="price.c1note">Solo cobramos el 30% del ahorro anual conseguido</div>
+            <div class="price-divider"></div>
+            <div class="price-items">
+              <div class="price-item"><i class="ti ti-check"></i><span data-i18n="price.c1i1">Auditoría completa de todos los contratos</span></div>
+              <div class="price-item"><i class="ti ti-check"></i><span data-i18n="price.c1i2">Informe detallado en PDF para la junta</span></div>
+              <div class="price-item"><i class="ti ti-check"></i><span data-i18n="price.c1i3">Gestión del cambio de proveedor incluida</span></div>
+              <div class="price-item"><i class="ti ti-check"></i><span data-i18n="price.c1i4">Sin coste si no hay ahorro</span></div>
+              <div class="price-item"><i class="ti ti-check"></i><span data-i18n="price.c1i5">Seguimiento durante el primer año</span></div>
+            </div>
+            <a href="#contacto" class="btn-price-main" style="display:block;text-align:center;text-decoration:none;margin-top:8px;" data-i18n="price.c1btn">Solicitar auditoría gratuita</a>
+          </div>
+          <div style="background:var(--gray-50);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:13px;font-weight:500;color:var(--gray-700);">Ejemplo real</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--gray-500);">Presupuesto anual</span>
+                <span style="font-weight:500;">40.000€</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--gray-500);">Ahorro conseguido</span>
+                <span style="font-weight:500;color:var(--green);">6.000€</span>
+              </div>
+              <div style="height:1px;background:var(--gray-300);"></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--gray-500);">Vuestro ahorro neto</span>
+                <span style="font-weight:500;color:var(--green);">4.200€</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--gray-500);">Honorarios Trovi</span>
+                <span style="font-weight:500;color:var(--amber);">1.800€</span>
+              </div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:12px;font-size:12px;color:var(--green-dark);line-height:1.5;" data-i18n="price.example_note">
+              La comunidad se queda con el 70% del ahorro. Trovi cobra el 30%. Si no hay ahorro, no hay factura.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIO ── -->
+<section class="testimonial-section">
+  <div class="test-inner">
+    <span class="test-quote-mark">"</span>
+    <p class="test-quote" data-i18n="test.quote">
+      Como presidente de mi comunidad en Salou detecté que llevábamos años pagando de más en varios contratos. Aplicando un método propio conseguí ahorrar 6.000€ sobre un presupuesto de 40.000€ — sin tocar ningún servicio.
+    </p>
+    <div class="test-author">
+      <div class="test-avatar">I</div>
+      <div>
+        <div class="test-name">Ismael</div>
+        <div class="test-role" data-i18n="test.role">Fundador · Presidente de comunidad en Salou, Tarragona</div>
+      </div>
+    </div>
+    <div>
+      <div class="test-result"><i class="ti ti-trending-down"></i><span data-i18n="test.result">6.000€ ahorrados · 15% del presupuesto anual</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta-section" id="contacto">
+  <div class="cta-inner">
+    <h2 class="cta-title" data-i18n="cta.title">¿Tu comunidad paga de más?</h2>
+    <p class="cta-sub" data-i18n="cta.sub">Descúbrelo gratis. En 48 horas te decimos si hay margen de ahorro en tu comunidad.</p>
+
+    <!-- FORMULARIO COMPLETO -->
+    <div class="contact-form-wrap">
+
+      <!-- Estado: formulario visible -->
+      <form id="contactForm" class="contact-form" action="https://formspree.io/f/TU_ID_FORMSPREE" method="POST" novalidate>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="nombre" data-i18n="form.name">Nombre</label>
+            <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Tu nombre" data-i18n-placeholder="form.namePlaceholder" required>
+            <span class="form-error" id="err-nombre" data-i18n="form.nameErr">Por favor introduce tu nombre</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email" data-i18n="form.email">Email</label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="tu@email.com" required>
+            <span class="form-error" id="err-email" data-i18n="form.emailErr">Introduce un email válido</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="telefono" data-i18n="form.phone">Teléfono (opcional)</label>
+            <input class="form-input" type="tel" id="telefono" name="telefono" placeholder="612 345 678" data-i18n-placeholder="form.phonePlaceholder">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="tipo" data-i18n="form.type">Soy...</label>
+            <select class="form-input form-select" id="tipo" name="tipo" required>
+              <option value="" data-i18n="form.typeDefault">Selecciona una opción</option>
+              <option value="presidente" data-i18n="form.typePresident">Presidente de comunidad</option>
+              <option value="administrador" data-i18n="form.typeAdmin">Administrador de fincas</option>
+              <option value="propietario" data-i18n="form.typeOwner">Propietario</option>
+              <option value="otro" data-i18n="form.typeOther">Otro</option>
+            </select>
+            <span class="form-error" id="err-tipo" data-i18n="form.typeErr">Por favor selecciona una opción</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="comunidad" data-i18n="form.community">Comunidad o empresa</label>
+          <input class="form-input" type="text" id="comunidad" name="comunidad" placeholder="Nombre o dirección de tu comunidad" data-i18n-placeholder="form.communityPlaceholder">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="presupuesto" data-i18n="form.budget">Presupuesto anual aproximado</label>
+          <select class="form-input form-select" id="presupuesto" name="presupuesto">
+            <option value="" data-i18n="form.budgetDefault">¿Cuánto gasta la comunidad al año?</option>
+            <option value="menos20k" data-i18n="form.budget1">Menos de 20.000€</option>
+            <option value="20-40k" data-i18n="form.budget2">Entre 20.000€ y 40.000€</option>
+            <option value="40-80k" data-i18n="form.budget3">Entre 40.000€ y 80.000€</option>
+            <option value="mas80k" data-i18n="form.budget4">Más de 80.000€</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="mensaje" data-i18n="form.message">Mensaje (opcional)</label>
+          <textarea class="form-input form-textarea" id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente tu situación..." data-i18n-placeholder="form.messagePlaceholder" rows="3"></textarea>
+        </div>
+
+        <!-- Honeypot anti-spam (oculto) -->
+        <input type="text" name="_gotcha" style="display:none">
+        <input type="hidden" name="_subject" value="Nueva solicitud Trovi">
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <span id="btnText" data-i18n="form.submit">Enviar solicitud</span>
+          <i class="ti ti-send" id="btnIcon"></i>
+          <span id="btnLoading" style="display:none;">
+            <i class="ti ti-loader-2" style="animation:spin .8s linear infinite;"></i>
+          </span>
+        </button>
+
+        <p class="form-legal" data-i18n="form.legal">Sin compromiso. Te respondemos en menos de 48 horas. Tus datos no serán compartidos con terceros.</p>
+      </form>
+
+      <!-- Estado: enviado con éxito -->
+      <div id="formSuccess" class="form-success" style="display:none;">
+        <div class="success-icon"><i class="ti ti-circle-check"></i></div>
+        <h3 class="success-title" data-i18n="form.successTitle">¡Solicitud recibida!</h3>
+        <p class="success-text" data-i18n="form.successText">Te contactaremos en menos de 48 horas para explicarte si hay margen de ahorro en tu comunidad.</p>
+        <button class="btn-secondary" onclick="resetForm()" data-i18n="form.successBtn">Enviar otra consulta</button>
+      </div>
+
+      <!-- Estado: error -->
+      <div id="formError" class="form-error-box" style="display:none;">
+        <i class="ti ti-alert-circle"></i>
+        <span data-i18n="form.errorMsg">Ha ocurrido un error. Por favor inténtalo de nuevo o escríbenos a <strong>hola@trovi.es</strong></span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a href="#" class="footer-logo">
+    <div class="footer-logo-mark">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <span class="footer-logo-text">Trovi</span>
+  </a>
+  <div class="footer-copy">© 2025 Trovi · Salou, Tarragona</div>
+  <div class="footer-links">
+    <a href="#" class="footer-link" data-i18n="footer.privacy">Privacidad</a>
+    <a href="#" class="footer-link" data-i18n="footer.legal">Aviso legal</a>
+    <a href="#contacto" class="footer-link" data-i18n="footer.contact">Contacto</a>
+  </div>
+</footer>
+
+<!-- ── LÓGICA FORMULARIO + TRADUCCIONES ── -->
+<script>
+// ── FORMULARIO FORMSPREE ──
+const form = document.getElementById('contactForm');
+const btnSubmit = document.getElementById('btnSubmit');
+const btnText = document.getElementById('btnText');
+const btnIcon = document.getElementById('btnIcon');
+const btnLoading = document.getElementById('btnLoading');
+const formSuccess = document.getElementById('formSuccess');
+const formErrorBox = document.getElementById('formError');
+
+function validateForm() {
+  let valid = true;
+  const nombre = document.getElementById('nombre');
+  const email = document.getElementById('email');
+  const tipo = document.getElementById('tipo');
+
+  // Limpiar errores previos
+  document.querySelectorAll('.form-input').forEach(i => i.classList.remove('invalid'));
+  document.querySelectorAll('.form-error').forEach(e => e.classList.remove('visible'));
+
+  if (!nombre.value.trim()) {
+    nombre.classList.add('invalid');
+    document.getElementById('err-nombre').classList.add('visible');
+    valid = false;
+  }
+  if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    email.classList.add('invalid');
+    document.getElementById('err-email').classList.add('visible');
+    valid = false;
+  }
+  if (!tipo.value) {
+    tipo.classList.add('invalid');
+    document.getElementById('err-tipo').classList.add('visible');
+    valid = false;
+  }
+  return valid;
+}
+
+if (form) {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    formErrorBox.style.display = 'none';
+    if (!validateForm()) return;
+
+    // Estado cargando
+    btnSubmit.disabled = true;
+    btnText.style.display = 'none';
+    btnIcon.style.display = 'none';
+    btnLoading.style.display = 'inline-flex';
+
+    try {
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        formSuccess.style.display = 'block';
+      } else {
+        throw new Error('Error en el servidor');
+      }
+    } catch (err) {
+      formErrorBox.style.display = 'flex';
+      btnSubmit.disabled = false;
+      btnText.style.display = 'inline';
+      btnIcon.style.display = 'inline';
+      btnLoading.style.display = 'none';
+    }
+  });
+}
+
+function resetForm() {
+  form.reset();
+  form.style.display = 'flex';
+  formSuccess.style.display = 'none';
+  btnSubmit.disabled = false;
+  btnText.style.display = 'inline';
+  btnIcon.style.display = 'inline';
+  btnLoading.style.display = 'none';
+}
+
+// ── TRADUCCIONES ──
+const translations = {
+  es: {
+    "nav.how": "Cómo funciona",
+    "nav.software": "Software",
+    "nav.pricing": "Precios",
+    "nav.contact": "Contacto",
+    "nav.cta": "Solicitar auditoría",
+    "nav.login": "Acceder",
+    "hero.badge": "Caso real: 6.000€ ahorrados en Salou",
+    "hero.title1": "Tu comunidad",
+    "hero.title2": "paga de más.",
+    "hero.title3": "Nosotros lo demostramos.",
+    "hero.sub": "Auditamos los contratos de tu comunidad de propietarios y conseguimos un ahorro real. Solo cobramos si ahorramos — el 30% de lo que consigues.",
+    "hero.cta1": "Solicitar auditoría gratuita",
+    "hero.cta2": "Ver el software",
+    "hero.proof1": "Ahorro medio conseguido",
+    "hero.proof2": "Sin ahorro no se cobra",
+    "hero.proof3": "Primer informe entregado",
+    "how.tag": "Cómo funciona",
+    "how.title": "De 0 a ahorro en 4 pasos",
+    "how.sub": "Sin burocracia. Sin riesgo. Sin coste si no hay resultado.",
+    "how.s1t": "Nos envías el presupuesto anual",
+    "how.s1d": "Solo el acta o presupuesto de tu comunidad. En 48h te decimos si hay margen de mejora — sin compromiso.",
+    "how.s1tag": "Gratis y sin compromiso",
+    "how.s2t": "Auditamos todos los contratos",
+    "how.s2d": "Revisamos limpieza, ascensor, seguro, electricidad y jardinería. Pedimos presupuestos alternativos reales del mercado.",
+    "how.s2tag": "IA + revisión humana",
+    "how.s3t": "Te entregamos el informe",
+    "how.s3d": "Documento detallado por partida: cuánto pagas, cuánto podrías pagar, y con qué proveedor. Listo para presentar a la junta.",
+    "how.s4t": "Solo pagas si ahorras",
+    "how.s4d": "Nuestro cobro es el 30% del ahorro anual conseguido. Si no hay ahorro, no hay factura. Sin letra pequeña.",
+    "feat.tag": "El software",
+    "feat.title": "La plataforma que gestiona todo",
+    "feat.sub": "Para administradores de fincas que quieren ofrecer optimización de costes a sus comunidades.",
+    "feat.f1t": "OCR + análisis con IA",
+    "feat.f1d": "Sube el acta en PDF y la IA detecta automáticamente todas las partidas de gasto con su peso porcentual.",
+    "feat.f2t": "Expediente por comunidad",
+    "feat.f2d": "Toda la documentación, contratos y comparativas organizados en un expediente digital por comunidad.",
+    "feat.f3t": "Alertas de vencimientos",
+    "feat.f3d": "Aviso automático 90 días antes de que venza cada contrato para no perder ninguna oportunidad.",
+    "feat.f5t": "Histórico de ahorros",
+    "feat.f5d": "Muestra a cada comunidad cuánto ha ahorrado año a año. El mejor argumento de renovación que existe.",
+    "feat.f7t": "Informes exportables",
+    "feat.f7d": "Genera el informe final en PDF o Word con un clic. Listo para presentar en junta, con firma digital.",
+    "feat.f6t": "Acceso seguro por roles",
+    "feat.f6d": "Cada usuario accede solo a lo que le corresponde. Historial de actividad y control total desde el panel de administración.",
+    "price.tag": "Precios",
+    "price.title": "Modelo de cobro",
+    "price.sub": "Sin letra pequeña. Solo pagáis si conseguimos un ahorro real.",
+    "price.c1name": "Auditoría de comunidad",
+    "price.c1desc": "Para comunidades de propietarios y administradores de fincas que quieren optimizar sus gastos.",
+    "price.c1until": "hasta conseguir ahorro",
+    "price.c1note": "Solo cobramos el 30% del ahorro anual conseguido",
+    "price.c1i1": "Auditoría completa de todos los contratos",
+    "price.c1i2": "Informe detallado en PDF para la junta",
+    "price.c1i3": "Gestión del cambio de proveedor incluida",
+    "price.c1i4": "Sin coste si no hay ahorro",
+    "price.c1i5": "Seguimiento durante el primer año",
+    "price.c1btn": "Solicitar auditoría gratuita",
+    "price.example_note": "La comunidad se queda con el 70% del ahorro. Trovi cobra el 30%. Si no hay ahorro, no hay factura.",
+    "test.quote": "Como presidente de mi comunidad en Salou detecté que llevábamos años pagando de más en varios contratos. Aplicando un método propio conseguí ahorrar 6.000€ sobre un presupuesto de 40.000€ — sin tocar ningún servicio.",
+    "test.role": "Fundador · Presidente de comunidad en Salou, Tarragona",
+    "test.result": "6.000€ ahorrados · 15% del presupuesto anual",
+    "cta.title": "¿Tu comunidad paga de más?",
+    "cta.sub": "Descúbrelo gratis. En 48 horas te decimos si hay margen de ahorro en tu comunidad.",
+    "form.name": "Nombre",
+    "form.namePlaceholder": "Tu nombre",
+    "form.nameErr": "Por favor introduce tu nombre",
+    "form.email": "Email",
+    "form.emailErr": "Introduce un email válido",
+    "form.phone": "Teléfono (opcional)",
+    "form.phonePlaceholder": "612 345 678",
+    "form.type": "Soy...",
+    "form.typeDefault": "Selecciona una opción",
+    "form.typePresident": "Presidente de comunidad",
+    "form.typeAdmin": "Administrador de fincas",
+    "form.typeOwner": "Propietario",
+    "form.typeOther": "Otro",
+    "form.typeErr": "Por favor selecciona una opción",
+    "form.community": "Comunidad o empresa",
+    "form.communityPlaceholder": "Nombre o dirección de tu comunidad",
+    "form.budget": "Presupuesto anual aproximado",
+    "form.budgetDefault": "¿Cuánto gasta la comunidad al año?",
+    "form.budget1": "Menos de 20.000€",
+    "form.budget2": "Entre 20.000€ y 40.000€",
+    "form.budget3": "Entre 40.000€ y 80.000€",
+    "form.budget4": "Más de 80.000€",
+    "form.message": "Mensaje (opcional)",
+    "form.messagePlaceholder": "Cuéntanos brevemente tu situación...",
+    "form.submit": "Enviar solicitud",
+    "form.legal": "Sin compromiso. Te respondemos en menos de 48 horas. Tus datos no serán compartidos con terceros.",
+    "form.successTitle": "¡Solicitud recibida!",
+    "form.successText": "Te contactaremos en menos de 48 horas para explicarte si hay margen de ahorro en tu comunidad.",
+    "form.successBtn": "Enviar otra consulta",
+    "form.errorMsg": "Ha ocurrido un error. Por favor inténtalo de nuevo o escríbenos a hola@trovi.es",
+    "footer.privacy": "Privacidad",
+    "footer.legal": "Aviso legal",
+    "footer.contact": "Contacto"
+  },
+  ca: {
+    "nav.how": "Com funciona",
+    "nav.software": "Programari",
+    "nav.pricing": "Preus",
+    "nav.contact": "Contacte",
+    "nav.cta": "Sol·licitar auditoria",
+    "nav.login": "Accedir",
+    "hero.badge": "Cas real: 6.000€ estalviats a Salou",
+    "hero.title1": "La teva comunitat",
+    "hero.title2": "paga de més.",
+    "hero.title3": "Nosaltres ho demostrem.",
+    "hero.sub": "Auditem els contractes de la teva comunitat i aconseguim un estalvi real. Només cobrem si estalviem — el 30% del que aconsegueixes.",
+    "hero.cta1": "Sol·licitar auditoria gratuïta",
+    "hero.cta2": "Veure el programari",
+    "hero.proof1": "Estalvi mitjà aconseguit",
+    "hero.proof2": "Sense estalvi no es cobra",
+    "hero.proof3": "Primer informe lliurat",
+    "how.tag": "Com funciona",
+    "how.title": "De 0 a estalvi en 4 passos",
+    "how.sub": "Sense burocràcia. Sense risc. Sense cost si no hi ha resultat.",
+    "how.s1t": "Ens envies el pressupost anual",
+    "how.s1d": "Només l'acta o pressupost de la teva comunitat. En 48h et diem si hi ha marge — sense compromís.",
+    "how.s1tag": "Gratuït i sense compromís",
+    "how.s2t": "Auditem tots els contractes",
+    "how.s2d": "Revisem neteja, ascensor, assegurança, electricitat i jardineria. Demanem pressupostos alternatius reals.",
+    "how.s2tag": "IA + revisió humana",
+    "how.s3t": "Et lliurem l'informe",
+    "how.s3d": "Document detallat per partida. Llest per presentar a la junta.",
+    "how.s4t": "Només pagues si estalvies",
+    "how.s4d": "El nostre cobrament és el 30% de l'estalvi aconseguit. Sense lletra petita.",
+    "feat.tag": "El programari",
+    "feat.title": "La plataforma que gestiona-ho tot",
+    "feat.sub": "Per a administradors de finques que volen oferir optimització a les seves comunitats.",
+    "feat.f1t": "OCR + anàlisi amb IA",
+    "feat.f1d": "Puja l'acta en PDF i la IA detecta totes les partides automàticament.",
+    "feat.f2t": "Expedient per comunitat",
+    "feat.f2d": "Tota la documentació i contractes organitzats en un expedient digital.",
+    "feat.f3t": "Alertes de venciments",
+    "feat.f3d": "Avís automàtic 90 dies abans que venci cada contracte.",
+    "feat.f5t": "Historial d'estalvis",
+    "feat.f5d": "Mostra a cada comunitat quant ha estalviat any rere any.",
+    "feat.f7t": "Informes exportables",
+    "feat.f7d": "Genera l'informe final en PDF o Word amb un clic. Llest per presentar a la junta.",
+    "feat.f6t": "Accés segur per rols",
+    "feat.f6d": "Cada usuari accedeix només al que li correspon. Control total des del tauler d'administració.",
+    "price.tag": "Preus",
+    "price.title": "Model de cobrament",
+    "price.sub": "Sense lletra petita. Només pagueu si aconseguim un estalvi real.",
+    "price.c1name": "Auditoria de comunitat",
+    "price.c1desc": "Per a comunitats de propietaris i administradors de finques que volen optimitzar les seves despeses.",
+    "price.c1until": "fins a aconseguir estalvi",
+    "price.c1note": "Només cobrem el 30% de l'estalvi anual aconseguit",
+    "price.c1i1": "Auditoria completa de tots els contractes",
+    "price.c1i2": "Informe detallat en PDF per a la junta",
+    "price.c1i3": "Gestió del canvi de proveïdor inclosa",
+    "price.c1i4": "Sense cost si no hi ha estalvi",
+    "price.c1i5": "Seguiment durant el primer any",
+    "price.c1btn": "Sol·licitar auditoria gratuïta",
+    "price.example_note": "La comunitat es queda amb el 70% de l'estalvi. Trovi cobra el 30%. Si no hi ha estalvi, no hi ha factura.",
+    "test.quote": "Com a president de la meva comunitat a Salou vaig detectar que feia anys que pagàvem de més. Aplicant un mètode propi vaig aconseguir estalviar 6.000€ sobre un pressupost de 40.000€.",
+    "test.role": "Fundador · President de comunitat a Salou, Tarragona",
+    "test.result": "6.000€ estalviats · 15% del pressupost anual",
+    "cta.title": "La teva comunitat paga de més?",
+    "cta.sub": "Descobreix-ho gratis. En 48 hores et diem si hi ha marge d'estalvi.",
+    "form.name": "Nom",
+    "form.namePlaceholder": "El teu nom",
+    "form.nameErr": "Si us plau introdueix el teu nom",
+    "form.email": "Email",
+    "form.emailErr": "Introdueix un email vàlid",
+    "form.phone": "Telèfon (opcional)",
+    "form.phonePlaceholder": "612 345 678",
+    "form.type": "Sóc...",
+    "form.typeDefault": "Selecciona una opció",
+    "form.typePresident": "President de comunitat",
+    "form.typeAdmin": "Administrador de finques",
+    "form.typeOwner": "Propietari",
+    "form.typeOther": "Altre",
+    "form.typeErr": "Si us plau selecciona una opció",
+    "form.community": "Comunitat o empresa",
+    "form.communityPlaceholder": "Nom o adreça de la teva comunitat",
+    "form.budget": "Pressupost anual aproximat",
+    "form.budgetDefault": "Quant gasta la comunitat a l'any?",
+    "form.budget1": "Menys de 20.000€",
+    "form.budget2": "Entre 20.000€ i 40.000€",
+    "form.budget3": "Entre 40.000€ i 80.000€",
+    "form.budget4": "Més de 80.000€",
+    "form.message": "Missatge (opcional)",
+    "form.messagePlaceholder": "Explica'ns breument la teva situació...",
+    "form.submit": "Enviar sol·licitud",
+    "form.legal": "Sense compromís. Et responem en menys de 48 hores.",
+    "form.successTitle": "Sol·licitud rebuda!",
+    "form.successText": "Et contactarem en menys de 48 hores per explicar-te si hi ha marge d'estalvi.",
+    "form.successBtn": "Enviar una altra consulta",
+    "form.errorMsg": "S'ha produït un error. Si us plau torna-ho a intentar.",
+    "footer.privacy": "Privadesa",
+    "footer.legal": "Avís legal",
+    "footer.contact": "Contacte"
+  },
+  en: {
+    "nav.how": "How it works",
+    "nav.software": "Software",
+    "nav.pricing": "Pricing",
+    "nav.contact": "Contact",
+    "nav.cta": "Request audit",
+    "nav.login": "Log in",
+    "hero.badge": "Real case: €6,000 saved in Salou",
+    "hero.title1": "Your community",
+    "hero.title2": "is overpaying.",
+    "hero.title3": "We'll prove it.",
+    "hero.sub": "We audit your community's contracts and deliver real savings. We only charge if we save you money — 30% of what you save.",
+    "hero.cta1": "Request free audit",
+    "hero.cta2": "See the software",
+    "hero.proof1": "Average savings achieved",
+    "hero.proof2": "No savings, no charge",
+    "hero.proof3": "First report delivered",
+    "how.tag": "How it works",
+    "how.title": "From 0 to savings in 4 steps",
+    "how.sub": "No red tape. No risk. No cost if there are no results.",
+    "how.s1t": "Send us your annual budget",
+    "how.s1d": "Just the minutes or budget from your community. Within 48h we'll tell you if there's room to save.",
+    "how.s1tag": "Free and no commitment",
+    "how.s2t": "We audit all contracts",
+    "how.s2d": "We review cleaning, elevator, insurance, electricity and landscaping. We request real market alternatives.",
+    "how.s2tag": "AI + human review",
+    "how.s3t": "We deliver the report",
+    "how.s3d": "Detailed document by expense line. Ready to present to the owners' meeting.",
+    "how.s4t": "You only pay if you save",
+    "how.s4d": "We charge 30% of the annual savings achieved. No savings, no invoice. No fine print.",
+    "feat.tag": "The software",
+    "feat.title": "The platform that manages everything",
+    "feat.sub": "For property managers who want to offer cost optimization to all their communities.",
+    "feat.f1t": "OCR + AI analysis",
+    "feat.f1d": "Upload the minutes as PDF and AI automatically detects all expense lines.",
+    "feat.f2t": "File per community",
+    "feat.f2d": "All documentation, contracts and comparisons organized in a digital file.",
+    "feat.f3t": "Contract expiry alerts",
+    "feat.f3d": "Automatic alert 90 days before each contract expires.",
+    "feat.f5t": "Savings history",
+    "feat.f5d": "Show each community how much they've saved year by year. The best renewal argument there is.",
+    "feat.f7t": "Exportable reports",
+    "feat.f7d": "Generate the final report in PDF or Word in one click. Ready to present at the owners' meeting.",
+    "feat.f6t": "Secure role-based access",
+    "feat.f6d": "Each user accesses only what they need. Full activity history and control from the admin panel.",
+    "price.tag": "Pricing",
+    "price.title": "How we charge",
+    "price.sub": "No fine print. You only pay if we achieve real savings.",
+    "price.c1name": "Community audit",
+    "price.c1desc": "For communities and property managers who want to cut costs without cutting services.",
+    "price.c1until": "until savings achieved",
+    "price.c1note": "We only charge 30% of the annual savings achieved",
+    "price.c1i1": "Full audit of all contracts",
+    "price.c1i2": "Detailed PDF report for the owners' meeting",
+    "price.c1i3": "Provider switch management included",
+    "price.c1i4": "No cost if no savings",
+    "price.c1i5": "Follow-up throughout the first year",
+    "price.c1btn": "Request free audit",
+    "price.example_note": "The community keeps 70% of the savings. Trovi charges 30%. No savings, no invoice.",
+    "test.quote": "As president of my community in Salou I detected that we'd been overpaying on several contracts for years. Using my own method I managed to save €6,000 on a €40,000 annual budget.",
+    "test.role": "Founder · Community president in Salou, Tarragona",
+    "test.result": "€6,000 saved · 15% of annual budget",
+    "cta.title": "Is your community overpaying?",
+    "cta.sub": "Find out for free. Within 48 hours we'll tell you if there's savings potential.",
+    "form.name": "Name",
+    "form.namePlaceholder": "Your name",
+    "form.nameErr": "Please enter your name",
+    "form.email": "Email",
+    "form.emailErr": "Please enter a valid email",
+    "form.phone": "Phone (optional)",
+    "form.phonePlaceholder": "612 345 678",
+    "form.type": "I am...",
+    "form.typeDefault": "Select an option",
+    "form.typePresident": "Community president",
+    "form.typeAdmin": "Property manager",
+    "form.typeOwner": "Property owner",
+    "form.typeOther": "Other",
+    "form.typeErr": "Please select an option",
+    "form.community": "Community or company",
+    "form.communityPlaceholder": "Name or address of your community",
+    "form.budget": "Approximate annual budget",
+    "form.budgetDefault": "How much does the community spend per year?",
+    "form.budget1": "Less than €20,000",
+    "form.budget2": "Between €20,000 and €40,000",
+    "form.budget3": "Between €40,000 and €80,000",
+    "form.budget4": "More than €80,000",
+    "form.message": "Message (optional)",
+    "form.messagePlaceholder": "Tell us briefly about your situation...",
+    "form.submit": "Send request",
+    "form.legal": "No commitment. We respond within 48 hours. Your data will not be shared with third parties.",
+    "form.successTitle": "Request received!",
+    "form.successText": "We'll contact you within 48 hours to tell you if there's savings potential in your community.",
+    "form.successBtn": "Send another enquiry",
+    "form.errorMsg": "An error occurred. Please try again or email us at hola@trovi.es",
+    "footer.privacy": "Privacy",
+    "footer.legal": "Legal notice",
+    "footer.contact": "Contact"
+  }
+};
+
+let currentLang = 'es';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.documentElement.lang = lang;
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
+}
+</script>
+    "hero.badge": "Caso real: 6.000€ ahorrados en Salou",
+    "hero.title1": "Tu comunidad",
+    "hero.title2": "paga de más.",
+    "hero.title3": "Nosotros lo demostramos.",
+    "hero.sub": "Auditamos los contratos de tu comunidad de propietarios y conseguimos un ahorro real. Solo cobramos si ahorramos — el 30% de lo que consigues.",
+    "hero.cta1": "Solicitar auditoría gratuita",
+    "hero.cta2": "Ver el software",
+    "hero.proof1": "Ahorro medio conseguido",
+    "hero.proof2": "Sin ahorro no se cobra",
+    "hero.proof3": "Primer informe entregado",
+    "how.tag": "Cómo funciona",
+    "how.title": "De 0 a ahorro en 4 pasos",
+    "how.sub": "Sin burocracia. Sin riesgo. Sin coste si no hay resultado.",
+    "how.s1t": "Nos envías el presupuesto anual",
+    "how.s1d": "Solo el acta o presupuesto de tu comunidad. En 48h te decimos si hay margen de mejora — sin compromiso.",
+    "how.s1tag": "Gratis y sin compromiso",
+    "how.s2t": "Auditamos todos los contratos",
+    "how.s2d": "Revisamos limpieza, ascensor, seguro, electricidad y jardinería. Pedimos presupuestos alternativos reales del mercado.",
+    "how.s2tag": "IA + revisión humana",
+    "how.s3t": "Te entregamos el informe",
+    "how.s3d": "Documento detallado por partida: cuánto pagas, cuánto podrías pagar, y con qué proveedor. Listo para presentar a la junta.",
+    "how.s4t": "Solo pagas si ahorras",
+    "how.s4d": "Nuestro cobro es el 30% del ahorro anual conseguido. Si no hay ahorro, no hay factura. Sin letra pequeña.",
+    "feat.tag": "El software",
+    "feat.title": "La plataforma que gestiona todo",
+    "feat.sub": "Para administradores de fincas que quieren ofrecer optimización de costes a sus comunidades.",
+    "feat.f1t": "OCR + análisis con IA",
+    "feat.f1d": "Sube el acta en PDF y la IA detecta automáticamente todas las partidas de gasto con su peso porcentual.",
+    "feat.f2t": "Expediente por comunidad",
+    "feat.f2d": "Toda la documentación, contratos y comparativas organizados en un expediente digital por comunidad.",
+    "feat.f3t": "Alertas de vencimientos",
+    "feat.f3d": "Aviso automático 90 días antes de que venza cada contrato para no perder ninguna oportunidad.",
+
+    "feat.f5t": "Histórico de ahorros",
+    "feat.f5d": "Muestra a cada comunidad cuánto ha ahorrado año a año. El mejor argumento de renovación que existe.",
+    "feat.f6t": "Roles y permisos",
+    "feat.f6d": "Administrador, trabajador y cliente — cada usuario ve solo lo que necesita. Acceso seguro y controlado.",
+    "price.tag": "Precios",
+    "price.title": "Para cada tipo de cliente",
+    "price.sub": "Tanto si eres una comunidad como si eres administrador de fincas.",
+    "price.c1name": "Comunidad",
+    "price.c1desc": "Para presidentes de comunidad que quieren saber si pagan de más.",
+    "price.c1until": "hasta conseguir ahorro",
+    "price.c1note": "Luego: 30% del ahorro anual conseguido",
+    "price.c1i1": "Auditoría completa de contratos",
+    "price.c1i2": "Informe en PDF para la junta",
+    "price.c1i3": "Gestión del cambio de proveedor",
+    "price.c1i4": "Sin coste si no hay ahorro",
+    "price.c1btn": "Solicitar auditoría",
+
+    "test.quote": "Como presidente de mi comunidad en Salou detecté que llevábamos años pagando de más en varios contratos. Aplicando un método propio conseguí ahorrar 6.000€ sobre un presupuesto de 40.000€ — sin tocar ningún servicio.",
+    "test.role": "Fundador · Presidente de comunidad en Salou, Tarragona",
+    "test.result": "6.000€ ahorrados · 15% del presupuesto anual",
+    "cta.title": "¿Tu comunidad paga de más?",
+    "cta.sub": "Descúbrelo gratis. En 48 horas te decimos si hay margen de ahorro en tu comunidad.",
+    "cta.placeholder": "tu@email.com",
+    "cta.btn": "Empezar",
+    "cta.note": "Sin compromiso. Te respondemos en menos de 48 horas.",
+    "footer.privacy": "Privacidad",
+    "footer.legal": "Aviso legal",
+    "footer.contact": "Contacto"
+  },
+  ca: {
+    "nav.how": "Com funciona",
+    "nav.software": "Programari",
+    "nav.pricing": "Preus",
+    "nav.contact": "Contacte",
+    "nav.cta": "Sol·licitar auditoria",
+    "hero.badge": "Cas real: 6.000€ estalviats a Salou",
+    "hero.title1": "La teva comunitat",
+    "hero.title2": "paga de més.",
+    "hero.title3": "Nosaltres ho demostrem.",
+    "hero.sub": "Auditem els contractes de la teva comunitat de propietaris i aconseguim un estalvi real. Només cobrem si estalviem — el 30% del que aconsegueixes.",
+    "hero.cta1": "Sol·licitar auditoria gratuïta",
+    "hero.cta2": "Veure el programari",
+    "hero.proof1": "Estalvi mitjà aconseguit",
+    "hero.proof2": "Sense estalvi no es cobra",
+    "hero.proof3": "Primer informe lliurat",
+    "how.tag": "Com funciona",
+    "how.title": "De 0 a estalvi en 4 passos",
+    "how.sub": "Sense burocràcia. Sense risc. Sense cost si no hi ha resultat.",
+    "how.s1t": "Ens envies el pressupost anual",
+    "how.s1d": "Només l'acta o pressupost de la teva comunitat. En 48h et diem si hi ha marge de millora — sense compromís.",
+    "how.s1tag": "Gratuït i sense compromís",
+    "how.s2t": "Auditem tots els contractes",
+    "how.s2d": "Revisem neteja, ascensor, assegurança, electricitat i jardineria. Demanem pressupostos alternatius reals del mercat.",
+    "how.s2tag": "IA + revisió humana",
+    "how.s3t": "Et lliurem l'informe",
+    "how.s3d": "Document detallat per partida: quant pagues, quant podries pagar i amb quin proveïdor. Llest per presentar a la junta.",
+    "how.s4t": "Només pagues si estalvies",
+    "how.s4d": "El nostre cobrament és el 30% de l'estalvi anual aconseguit. Si no hi ha estalvi, no hi ha factura.",
+    "feat.tag": "El programari",
+    "feat.title": "La plataforma que gestiona-ho tot",
+    "feat.sub": "Per a administradors de finques que volen oferir optimització de costos a les seves comunitats.",
+    "feat.f1t": "OCR + anàlisi amb IA",
+    "feat.f1d": "Puja l'acta en PDF i la IA detecta automàticament totes les partides de despesa.",
+    "feat.f2t": "Expedient per comunitat",
+    "feat.f2d": "Tota la documentació, contractes i comparatives organitzats en un expedient digital.",
+    "feat.f3t": "Alertes de venciments",
+    "feat.f3d": "Avís automàtic 90 dies abans que venci cada contracte.",
+    "feat.f4t": "CRM de proveïdors",
+    "feat.f4d": "Gestiona contactes, valoracions i detecta quan tens volum per negociar millors preus.",
+    "feat.f5t": "Historial d'estalvis",
+    "feat.f5d": "Mostra a cada comunitat quant ha estalviat any rere any.",
+    "feat.f6t": "Rols i permisos",
+    "feat.f6d": "Administrador, treballador i client — cada usuari veu només el que necessita.",
+    "price.tag": "Preus",
+    "price.title": "Per a cada tipus de client",
+    "price.sub": "Tant si ets una comunitat com si ets administrador de finques.",
+    "price.c1name": "Comunitat",
+    "price.c1desc": "Per a presidents de comunitat que volen saber si paguen de més.",
+    "price.c1until": "fins a aconseguir estalvi",
+    "price.c1note": "Després: 30% de l'estalvi anual aconseguit",
+    "price.c1i1": "Auditoria completa de contractes",
+    "price.c1i2": "Informe en PDF per a la junta",
+    "price.c1i3": "Gestió del canvi de proveïdor",
+    "price.c1i4": "Sense cost si no hi ha estalvi",
+    "price.c1btn": "Sol·licitar auditoria",
+    "price.c2tag": "Per a administradors",
+    "price.c2name": "Programari SaaS",
+    "price.c2desc": "Per a administradors que volen oferir optimització a totes les seves comunitats.",
+    "price.c2period": "/mes",
+    "price.c2note": "Comunitats il·limitades · Tot inclòs",
+    "price.c2i1": "Plataforma completa d'auditoria",
+    "price.c2i2": "OCR + anàlisi IA inclòs",
+    "price.c2i3": "CRM de proveïdors",
+    "price.c2i4": "Accés per rols (admin/treballador/client)",
+    "price.c2i5": "Suport prioritari",
+    "price.c2btn": "Sol·licitar demo",
+    "test.quote": "Com a president de la meva comunitat a Salou vaig detectar que feia anys que pagàvem de més en diversos contractes. Aplicant un mètode propi vaig aconseguir estalviar 6.000€ sobre un pressupost de 40.000€ — sense tocar cap servei.",
+    "test.role": "Fundador · President de comunitat a Salou, Tarragona",
+    "test.result": "6.000€ estalviats · 15% del pressupost anual",
+    "cta.title": "La teva comunitat paga de més?",
+    "cta.sub": "Descobreix-ho gratis. En 48 hores et diem si hi ha marge d'estalvi.",
+    "cta.placeholder": "tu@email.com",
+    "cta.btn": "Començar",
+    "cta.note": "Sense compromís. Et responem en menys de 48 hores.",
+    "footer.privacy": "Privadesa",
+    "footer.legal": "Avís legal",
+    "footer.contact": "Contacte"
+  },
+  en: {
+    "nav.how": "How it works",
+    "nav.software": "Software",
+    "nav.pricing": "Pricing",
+    "nav.contact": "Contact",
+    "nav.cta": "Request audit",
+    "hero.badge": "Real case: €6,000 saved in Salou",
+    "hero.title1": "Your community",
+    "hero.title2": "is overpaying.",
+    "hero.title3": "We'll prove it.",
+    "hero.sub": "We audit your community's contracts and deliver real savings. We only charge if we save you money — 30% of what you save.",
+    "hero.cta1": "Request free audit",
+    "hero.cta2": "See the software",
+    "hero.proof1": "Average savings achieved",
+    "hero.proof2": "No savings, no charge",
+    "hero.proof3": "First report delivered",
+    "how.tag": "How it works",
+    "how.title": "From 0 to savings in 4 steps",
+    "how.sub": "No red tape. No risk. No cost if there are no results.",
+    "how.s1t": "Send us your annual budget",
+    "how.s1d": "Just the minutes or budget from your community. Within 48h we'll tell you if there's room to save — no commitment.",
+    "how.s1tag": "Free and no commitment",
+    "how.s2t": "We audit all contracts",
+    "how.s2d": "We review cleaning, elevator, insurance, electricity and landscaping. We request real market alternatives.",
+    "how.s2tag": "AI + human review",
+    "how.s3t": "We deliver the report",
+    "how.s3d": "Detailed document by expense line: what you pay, what you could pay, and with which provider. Ready to present to the owners' meeting.",
+    "how.s4t": "You only pay if you save",
+    "how.s4d": "We charge 30% of the annual savings achieved. No savings, no invoice. No fine print.",
+    "feat.tag": "The software",
+    "feat.title": "The platform that manages everything",
+    "feat.sub": "For property managers who want to offer cost optimization to all their communities.",
+    "feat.f1t": "OCR + AI analysis",
+    "feat.f1d": "Upload the minutes as PDF and AI automatically detects all expense lines with their percentage weight.",
+    "feat.f2t": "File per community",
+    "feat.f2d": "All documentation, contracts and comparisons organized in a digital file per community.",
+    "feat.f3t": "Contract expiry alerts",
+    "feat.f3d": "Automatic alert 90 days before each contract expires so you never miss an opportunity.",
+    "feat.f4t": "Supplier CRM",
+    "feat.f4d": "Manage contacts, ratings and detect when you have enough volume to negotiate better prices.",
+    "feat.f5t": "Savings history",
+    "feat.f5d": "Show each community how much they've saved year by year. The best renewal argument there is.",
+    "feat.f6t": "Roles and permissions",
+    "feat.f6d": "Admin, worker and client — each user sees only what they need. Secure and controlled access.",
+    "price.tag": "Pricing",
+    "price.title": "For every type of client",
+    "price.sub": "Whether you're a community or a property management company.",
+    "price.c1name": "Community",
+    "price.c1desc": "For community presidents who want to know if they're overpaying.",
+    "price.c1until": "until savings achieved",
+    "price.c1note": "Then: 30% of annual savings achieved",
+    "price.c1i1": "Full contract audit",
+    "price.c1i2": "PDF report for the owners' meeting",
+    "price.c1i3": "Provider switch management",
+    "price.c1i4": "No cost if no savings",
+    "price.c1btn": "Request audit",
+    "price.c2tag": "For property managers",
+    "price.c2name": "SaaS Software",
+    "price.c2desc": "For property managers who want to offer optimization to all their communities.",
+    "price.c2period": "/month",
+    "price.c2note": "Unlimited communities · Everything included",
+    "price.c2i1": "Full audit platform",
+    "price.c2i2": "OCR + AI analysis included",
+    "price.c2i3": "Supplier CRM",
+    "price.c2i4": "Role-based access (admin/worker/client)",
+    "price.c2i5": "Priority support",
+    "price.c2btn": "Request demo",
+    "test.quote": "As president of my community in Salou I detected that we'd been overpaying on several contracts for years. Using my own method I managed to save €6,000 on a €40,000 annual budget — without cutting any service.",
+    "test.role": "Founder · Community president in Salou, Tarragona",
+    "test.result": "€6,000 saved · 15% of annual budget",
+    "cta.title": "Is your community overpaying?",
+    "cta.sub": "Find out for free. Within 48 hours we'll tell you if there's savings potential.",
+    "cta.placeholder": "your@email.com",
+    "cta.btn": "Get started",
+    "cta.note": "No commitment. We respond within 48 hours.",
+    "footer.privacy": "Privacy",
+    "footer.legal": "Legal notice",
+    "footer.contact": "Contact"
+  }
+};
+
+let currentLang = 'es';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.documentElement.lang = lang;
+
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key]) el.placeholder = t[key];
+  });
+}
+</script>
+
+</body>
+</html>
