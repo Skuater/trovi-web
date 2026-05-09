@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trovi para Administradores de Fincas — Ofrece más a tus comunidades</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --green: #0F6E56;
+  --green-dark: #085041;
+  --green-light: #E1F5EE;
+  --green-mid: #1D9E75;
+  --green-border: #9FE1CB;
+  --gold: #C49A2A;
+  --gold-light: #FBF3E0;
+  --gray-900: #1A1A18;
+  --gray-700: #3D3D3A;
+  --gray-500: #6B6B67;
+  --gray-200: #E5E3DC;
+  --gray-100: #F4F2EB;
+  --gray-50: #FAFAF7;
+  --white: #FFFFFF;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --radius: 10px;
+  --radius-lg: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--white); color: var(--gray-900); -webkit-font-smoothing: antialiased; font-weight: 300; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0 48px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark {
+  width: 30px; height: 30px; background: var(--green);
+  border-radius: 7px; display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-mark svg { width: 17px; height: 17px; }
+.nav-logo-text { font-family: var(--font-display); font-size: 20px; color: var(--gray-900); }
+.nav-tag {
+  font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 20px;
+  background: var(--gold-light); color: var(--gold);
+  letter-spacing: .04em;
+}
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-link { font-size: 14px; color: var(--gray-500); text-decoration: none; transition: color .2s; }
+.nav-link:hover { color: var(--green); }
+.btn-nav {
+  padding: 9px 20px;
+  background: var(--green); color: var(--white);
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  border: none; border-radius: var(--radius); cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: background .2s, transform .15s;
+}
+.btn-nav:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  background: var(--gray-900);
+  padding: 96px 48px 80px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(15,110,86,0.18) 0%, transparent 60%);
+}
+.hero-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 480px;
+  gap: 64px; align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500; letter-spacing: .08em;
+  color: var(--green-mid); background: rgba(29,158,117,0.12);
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 52px; line-height: 1.1; letter-spacing: -.5px;
+  color: var(--white); margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--green-mid); }
+.hero-sub {
+  font-size: 17px; color: rgba(255,255,255,.5);
+  line-height: 1.65; margin-bottom: 36px; max-width: 460px;
+}
+.hero-ctas { display: flex; gap: 12px; }
+.btn-hero-primary {
+  padding: 13px 28px; background: var(--green); color: var(--white);
+  font-family: var(--font-body); font-size: 15px; font-weight: 500;
+  border: none; border-radius: var(--radius); cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 4px 20px rgba(15,110,86,.4);
+}
+.btn-hero-primary:hover { background: var(--green-dark); transform: translateY(-2px); }
+.btn-hero-sec {
+  padding: 13px 28px; background: transparent; color: rgba(255,255,255,.7);
+  font-family: var(--font-body); font-size: 15px; font-weight: 400;
+  border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius);
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color .2s, color .2s;
+}
+.btn-hero-sec:hover { border-color: var(--green-mid); color: var(--green-mid); }
+
+/* Hero stats */
+.hero-stats {
+  display: flex; gap: 32px; margin-top: 48px;
+  padding-top: 40px; border-top: 1px solid rgba(255,255,255,.08);
+}
+.hero-stat {}
+.hs-num {
+  font-family: var(--font-display); font-size: 32px; color: var(--green-mid);
+  line-height: 1;
+}
+.hs-lbl { font-size: 12px; color: rgba(255,255,255,.35); margin-top: 4px; line-height: 1.3; }
+
+/* Hero card mockup */
+.hero-mockup {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px; padding: 24px;
+  animation: float 6s ease-in-out infinite;
+}
+.mock-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+.mock-title { font-size: 12px; color: rgba(255,255,255,.35); margin-left: auto; }
+.mock-community {
+  background: rgba(255,255,255,.05); border-radius: 12px; padding: 14px;
+  margin-bottom: 10px; border: 1px solid rgba(255,255,255,.06);
+}
+.mc-name { font-size: 13px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+.mc-meta { font-size: 11px; color: rgba(255,255,255,.3); margin-bottom: 10px; }
+.mc-stats { display: flex; gap: 16px; }
+.mc-stat { }
+.mc-val { font-size: 16px; font-weight: 500; }
+.mc-val.green { color: var(--green-mid); }
+.mc-val.white { color: var(--white); }
+.mc-lbl { font-size: 10px; color: rgba(255,255,255,.3); }
+.mc-bar { height: 3px; background: rgba(255,255,255,.08); border-radius: 2px; margin-top: 10px; }
+.mc-bar-fill { height: 100%; border-radius: 2px; background: var(--green-mid); }
+
+/* ── SECCIÓN ALIANZA ── */
+.section { padding: 80px 48px; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-tag {
+  font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); display: flex; align-items: center; gap: 6px; margin-bottom: 14px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: 40px; line-height: 1.15;
+  color: var(--gray-900); margin-bottom: 14px; letter-spacing: -.3px;
+}
+.section-sub { font-size: 16px; color: var(--gray-500); line-height: 1.65; max-width: 540px; }
+
+/* Beneficios grid */
+.benefits-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-top: 48px;
+}
+.benefit-card {
+  padding: 28px; border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.benefit-card:hover {
+  border-color: var(--green-border);
+  box-shadow: 0 8px 32px rgba(15,110,86,.08);
+  transform: translateY(-3px);
+}
+.benefit-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  background: var(--green-light); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 16px;
+}
+.benefit-title { font-size: 16px; font-weight: 500; color: var(--gray-900); margin-bottom: 8px; }
+.benefit-desc { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+
+/* ── CÓMO FUNCIONA ── */
+.how-section { background: var(--gray-100); padding: 80px 48px; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 48px; background: var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; }
+.step {
+  background: var(--white); padding: 28px 24px;
+  transition: background .2s;
+}
+.step:hover { background: var(--green-light); }
+.step-num {
+  font-family: var(--font-display); font-size: 36px; color: var(--gray-200);
+  margin-bottom: 12px; line-height: 1;
+}
+.step-title { font-size: 15px; font-weight: 500; color: var(--gray-900); margin-bottom: 8px; }
+.step-desc { font-size: 13px; color: var(--gray-500); line-height: 1.55; }
+
+/* ── MODELO ECONÓMICO ── */
+.economics { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 48px; }
+.econ-visual {
+  background: var(--gray-900); border-radius: var(--radius-lg); padding: 32px;
+}
+.econ-title { font-family: var(--font-display); font-size: 18px; color: var(--white); margin-bottom: 24px; }
+.econ-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.06);
+  font-size: 14px;
+}
+.econ-row:last-child { border-bottom: none; }
+.econ-label { color: rgba(255,255,255,.45); }
+.econ-value { font-weight: 500; }
+.econ-value.white { color: var(--white); }
+.econ-value.green { color: var(--green-mid); }
+.econ-value.gold { color: var(--gold); }
+.econ-highlight {
+  margin-top: 20px; padding: 14px 16px;
+  background: rgba(15,110,86,.15); border-radius: 10px;
+  border: 1px solid rgba(29,158,117,.2);
+  font-size: 13px; color: var(--green-mid); line-height: 1.5;
+}
+.econ-text h3 { font-family: var(--font-display); font-size: 26px; color: var(--gray-900); margin-bottom: 14px; }
+.econ-text p { font-size: 15px; color: var(--gray-500); line-height: 1.65; margin-bottom: 16px; }
+.econ-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; color: var(--gray-700); margin-bottom: 12px;
+}
+.econ-item i { font-size: 16px; color: var(--green); margin-top: 1px; flex-shrink: 0; }
+
+/* ── PANEL PREVIEW ── */
+.panel-preview-section { background: var(--gray-100); padding: 80px 48px; }
+.preview-frame {
+  background: var(--white); border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 20px 60px rgba(0,0,0,.08);
+  overflow: hidden; margin-top: 48px;
+}
+.frame-header {
+  background: var(--gray-900); padding: 12px 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.frame-dot { width: 12px; height: 12px; border-radius: 50%; }
+.frame-url {
+  background: rgba(255,255,255,.08); border-radius: 6px;
+  padding: 4px 16px; font-size: 12px; color: rgba(255,255,255,.4);
+  margin: 0 auto;
+}
+.frame-body { display: flex; height: 420px; }
+.frame-sidebar {
+  width: 200px; border-right: 1px solid var(--gray-100);
+  padding: 16px 0; flex-shrink: 0;
+}
+.frame-logo {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px 16px; border-bottom: 1px solid var(--gray-100); margin-bottom: 12px;
+}
+.frame-logo-mark {
+  width: 24px; height: 24px; background: var(--green);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+}
+.frame-logo-text { font-family: var(--font-display); font-size: 15px; }
+.frame-nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; font-size: 12px; color: var(--gray-500);
+  border-left: 2px solid transparent;
+}
+.frame-nav-item.active {
+  color: var(--green); font-weight: 500;
+  background: var(--green-light); border-left-color: var(--green);
+}
+.frame-nav-item i { font-size: 14px; }
+.frame-main { flex: 1; overflow: hidden; }
+.frame-topbar {
+  padding: 14px 20px; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.frame-topbar-title { font-size: 15px; font-weight: 500; }
+.frame-topbar-sub { font-size: 11px; color: var(--gray-500); }
+.frame-content { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+.mini-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mini-stat {
+  background: var(--gray-50); border-radius: 10px; padding: 12px;
+  border: 1px solid var(--gray-100);
+}
+.mini-stat-val { font-size: 18px; font-weight: 500; }
+.mini-stat-val.green { color: var(--green); }
+.mini-stat-lbl { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+.mini-comm {
+  background: var(--white); border: 1px solid var(--gray-100);
+  border-radius: 10px; padding: 12px;
+}
+.mini-comm-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+.mini-comm-meta { font-size: 11px; color: var(--gray-500); margin-bottom: 8px; }
+.mini-prog { height: 4px; background: var(--gray-100); border-radius: 2px; }
+.mini-prog-fill { height: 100%; border-radius: 2px; background: var(--green); }
+
+/* ── TESTIMONIAL ── */
+.testimonial-section { padding: 80px 48px; }
+.test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.test-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 20px;
+}
+.test-quote {
+  font-family: var(--font-display); font-size: 26px; line-height: 1.4;
+  color: var(--gray-900); font-style: italic; margin-bottom: 24px;
+}
+.test-author { display: flex; align-items: center; gap: 12px; }
+.test-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--green); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 18px; color: var(--white);
+}
+.test-name { font-size: 15px; font-weight: 500; }
+.test-role { font-size: 12px; color: var(--gray-500); }
+.test-result-card {
+  background: var(--green); border-radius: var(--radius-lg); padding: 32px;
+  color: var(--white);
+}
+.trc-label { font-size: 12px; color: rgba(255,255,255,.6); margin-bottom: 6px; }
+.trc-value { font-family: var(--font-display); font-size: 44px; color: var(--white); line-height: 1; margin-bottom: 4px; }
+.trc-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 24px; }
+.trc-divider { height: 1px; background: rgba(255,255,255,.15); margin-bottom: 20px; }
+.trc-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+.trc-item-label { color: rgba(255,255,255,.5); }
+.trc-item-value { color: var(--white); font-weight: 500; }
+
+/* ── CTA ── */
+.cta-section {
+  background: var(--gray-900); padding: 96px 48px; text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(15,110,86,.2) 0%, transparent 60%);
+}
+.cta-inner { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+.cta-title { font-family: var(--font-display); font-size: 44px; color: var(--white); margin-bottom: 14px; line-height: 1.15; }
+.cta-sub { font-size: 16px; color: rgba(255,255,255,.45); margin-bottom: 36px; line-height: 1.6; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--gray-900); padding: 32px 48px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.footer-logo-text { font-family: var(--font-display); font-size: 18px; color: var(--white); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.25); }
+.footer-links { display: flex; gap: 20px; }
+.footer-link { font-size: 12px; color: rgba(255,255,255,.3); text-decoration: none; transition: color .2s; }
+.footer-link:hover { color: rgba(255,255,255,.7); }
+
+@media (max-width: 900px) {
+  .hero-inner, .two-col, .economics, .test-grid { grid-template-columns: 1fr; }
+  .hero-mockup { display: none; }
+  .benefits-grid, .steps { grid-template-columns: 1fr 1fr; }
+  nav { padding: 0 20px; }
+  .section { padding: 60px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <span class="nav-logo-text">Trovi</span>
+  </a>
+  <span class="nav-tag">Para administradores</span>
+  <div class="nav-right">
+    <a href="#alianza" class="nav-link">La alianza</a>
+    <a href="#modelo" class="nav-link">Modelo económico</a>
+    <a href="#panel" class="nav-link">El panel</a>
+    <a href="app.html" class="btn-nav"><i class="ti ti-layout-dashboard"></i>Ver demo del panel</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div style="animation: fadeUp .6s ease both;">
+      <div class="hero-eyebrow"><i class="ti ti-building"></i>Exclusivo para administradores de fincas</div>
+      <h1 class="hero-title">Ofrece más.<br><em>Fideliza más.</em><br>Sin trabajo extra.</h1>
+      <p class="hero-sub">Trovi audita los gastos de tus comunidades y consigue ahorros reales. Tú te diferencias. Ellas ahorran. Todos ganan.</p>
+      <div class="hero-ctas">
+        <a href="#contacto" class="btn-hero-primary"><i class="ti ti-arrow-right"></i>Quiero ser partner</a>
+        <a href="app.html" class="btn-hero-sec"><i class="ti ti-eye"></i>Ver el panel en acción</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hs-num">15%</div><div class="hs-lbl">Ahorro medio por comunidad</div></div>
+        <div class="hero-stat"><div class="hs-num">0€</div><div class="hs-lbl">Coste si no hay ahorro</div></div>
+        <div class="hero-stat"><div class="hs-num">30 días</div><div class="hs-lbl">Primer informe entregado</div></div>
+      </div>
+    </div>
+    <div style="animation: fadeUp .6s .15s ease both;">
+      <div class="hero-mockup">
+        <div class="mock-header">
+          <div class="mock-dot" style="background:#FF5F57"></div>
+          <div class="mock-dot" style="background:#FFBD2E"></div>
+          <div class="mock-dot" style="background:#27C93F"></div>
+          <div class="mock-title">Panel Nouambit Immobles · 4 comunidades</div>
+        </div>
+        <div class="mock-community">
+          <div class="mc-name">C/ Tarragona, 12</div>
+          <div class="mc-meta">28 viviendas · Auditoría completada</div>
+          <div class="mc-stats">
+            <div class="mc-stat"><div class="mc-val white">40.000€</div><div class="mc-lbl">Presupuesto</div></div>
+            <div class="mc-stat"><div class="mc-val green">6.300€</div><div class="mc-lbl">Ahorro</div></div>
+            <div class="mc-stat"><div class="mc-val green">15,7%</div><div class="mc-lbl">Reducción</div></div>
+          </div>
+          <div class="mc-bar"><div class="mc-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="mock-community">
+          <div class="mc-name">C/ Reus, 7</div>
+          <div class="mc-meta">15 viviendas · En curso</div>
+          <div class="mc-stats">
+            <div class="mc-stat"><div class="mc-val white">24.000€</div><div class="mc-lbl">Presupuesto</div></div>
+            <div class="mc-stat"><div class="mc-val green">~2.800€</div><div class="mc-lbl">Estimado</div></div>
+            <div class="mc-stat"><div class="mc-val green">57%</div><div class="mc-lbl">Progreso</div></div>
+          </div>
+          <div class="mc-bar"><div class="mc-bar-fill" style="width:57%"></div></div>
+        </div>
+        <div style="text-align:center;margin-top:16px;font-size:12px;color:rgba(255,255,255,.25);">Acceso exclusivo para tu empresa · Solo lectura</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="section" id="alianza">
+  <div class="section-inner">
+    <div class="section-tag"><i class="ti ti-handshake"></i>La alianza</div>
+    <h2 class="section-title">Por qué trabajar con Trovi</h2>
+    <p class="section-sub">No te pedimos que cambies cómo trabajas. Te damos algo nuevo que ofrecer.</p>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="ti ti-award"></i></div>
+        <div class="benefit-title">Te diferencias de la competencia</div>
+        <div class="benefit-desc">Muy pocos administradores ofrecen auditoría de costes. Es un argumento de captación que casi nadie tiene en tu sector.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="ti ti-heart"></i></div>
+        <div class="benefit-title">Fidelizas comunidades con resultados</div>
+        <div class="benefit-desc">Una comunidad que ha ahorrado dinero gracias a su administrador no cambia de gestor. El ahorro demostrable es el mejor argumento de renovación.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="ti ti-coin"></i></div>
+        <div class="benefit-title">Ingresos adicionales sin inversión</div>
+        <div class="benefit-desc">Recibes una comisión del 8-10% del ahorro conseguido en tus comunidades. Sin costes de arranque, sin riesgo.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="ti ti-eye"></i></div>
+        <div class="benefit-title">Panel de visibilidad total</div>
+        <div class="benefit-desc">Acceso en tiempo real al estado de cada expediente, documentos y ahorros conseguidos. Transparencia total hacia tus comunidades.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="ti ti-shield-check"></i></div>
+        <div class="benefit-title">Sin conflicto de intereses</div>
+        <div class="benefit-desc">Trovi trabaja solo a éxito. Si no hay ahorro, no cobras nada. El alineamiento de intereses es total con tus comunidades.</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon"><i class="ti ti-settings"></i></div>
+        <div class="benefit-title">Sin trabajo adicional para ti</div>
+        <div class="benefit-desc">Trovi gestiona todo el proceso de auditoría. Tú facilitas el acceso y validas ante la junta. El trabajo operativo es nuestro.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="how-section" id="como">
+  <div class="section-inner">
+    <div class="section-tag"><i class="ti ti-list-check"></i>Cómo funciona</div>
+    <h2 class="section-title">Cuatro pasos, cero complicaciones</h2>
+    <p class="section-sub">Desde el primer contacto hasta el informe final, Trovi gestiona todo el proceso.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Acuerdo de colaboración</div>
+        <div class="step-desc">Firmamos un acuerdo simple que define las condiciones de la alianza, comisiones y accesos.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Seleccionas las comunidades</div>
+        <div class="step-desc">Tú decides qué comunidades participan. Trovi contacta con el presidente y explica el servicio.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Trovi audita y negocia</div>
+        <div class="step-desc">Revisamos contratos, pedimos presupuestos alternativos y negociamos con proveedores. Tú tienes visibilidad en tiempo real.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Presentamos en junta y cobramos</div>
+        <div class="step-desc">El informe va firmado por ti y por Trovi. Si hay ahorro, cobramos el 30% y tú recibes tu comisión.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELO ECONÓMICO -->
+<section class="section" id="modelo">
+  <div class="section-inner">
+    <div class="section-tag"><i class="ti ti-calculator"></i>Modelo económico</div>
+    <h2 class="section-title">¿Qué ganas exactamente?</h2>
+    <div class="economics">
+      <div class="econ-visual">
+        <div class="econ-title">Ejemplo real · Comunidad mediana</div>
+        <div class="econ-row"><span class="econ-label">Presupuesto anual</span><span class="econ-value white">40.000€</span></div>
+        <div class="econ-row"><span class="econ-label">Ahorro conseguido (15%)</span><span class="econ-value green">6.000€</span></div>
+        <div class="econ-row" style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:16px;"></div>
+        <div class="econ-row"><span class="econ-label">La comunidad se queda</span><span class="econ-value green">4.200€ netos</span></div>
+        <div class="econ-row"><span class="econ-label">Honorarios Trovi (30%)</span><span class="econ-value white">1.800€</span></div>
+        <div class="econ-row"><span class="econ-label">Tu comisión (10% del ahorro)</span><span class="econ-value gold">600€</span></div>
+        <div class="econ-highlight">Por cada comunidad mediana que participe, recibes entre 400€ y 800€ adicionales sin ningún trabajo operativo de tu parte.</div>
+      </div>
+      <div class="econ-text">
+        <h3>Sin riesgo, con beneficio claro</h3>
+        <p>El modelo es completamente a éxito. Si Trovi no consigue ahorro, no hay factura para la comunidad y no hay comisión para nadie.</p>
+        <p>Con 10 comunidades participando en escenario realista, puedes generar entre 4.000€ y 8.000€ adicionales al año sin cambiar nada en tu operativa actual.</p>
+        <div class="econ-item"><i class="ti ti-check"></i>Comisión del 8-10% del ahorro conseguido</div>
+        <div class="econ-item"><i class="ti ti-check"></i>Pago al mismo tiempo que Trovi cobra</div>
+        <div class="econ-item"><i class="ti ti-check"></i>Facturación directa entre empresas</div>
+        <div class="econ-item"><i class="ti ti-check"></i>Sin inversión inicial ni cuotas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL PREVIEW -->
+<section class="panel-preview-section" id="panel">
+  <div class="section-inner">
+    <div class="section-tag"><i class="ti ti-layout-dashboard"></i>El panel</div>
+    <h2 class="section-title">Visibilidad total sobre tus comunidades</h2>
+    <p class="section-sub">Acceso exclusivo de solo lectura. Ves el estado de cada expediente, documentos y ahorros en tiempo real.</p>
+    <div class="preview-frame">
+      <div class="frame-header">
+        <div class="frame-dot" style="background:#FF5F57"></div>
+        <div class="frame-dot" style="background:#FFBD2E"></div>
+        <div class="frame-dot" style="background:#27C93F"></div>
+        <div class="frame-url">trovi.es/app.html</div>
+      </div>
+      <div class="frame-body">
+        <div class="frame-sidebar">
+          <div class="frame-logo">
+            <div class="frame-logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <span class="frame-logo-text">Trovi</span>
+          </div>
+          <div class="frame-nav-item active"><i class="ti ti-layout-dashboard"></i>Resumen</div>
+          <div class="frame-nav-item"><i class="ti ti-building"></i>Comunidades</div>
+          <div class="frame-nav-item"><i class="ti ti-file-export"></i>Informes</div>
+          <div class="frame-nav-item"><i class="ti ti-chart-bar"></i>Ahorros</div>
+        </div>
+        <div class="frame-main">
+          <div class="frame-topbar">
+            <div><div class="frame-topbar-title">Estado de expedientes</div><div class="frame-topbar-sub">Nouambit Immobles · 4 comunidades</div></div>
+            <button style="padding:6px 12px;background:var(--green);color:white;border:none;border-radius:6px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;"><i class="ti ti-download"></i>Descargar</button>
+          </div>
+          <div class="frame-content">
+            <div class="mini-stat-row">
+              <div class="mini-stat"><div class="mini-stat-val">4</div><div class="mini-stat-lbl">Comunidades</div></div>
+              <div class="mini-stat"><div class="mini-stat-val green">19.300€</div><div class="mini-stat-lbl">Ahorro total</div></div>
+              <div class="mini-stat"><div class="mini-stat-val">2/4</div><div class="mini-stat-lbl">Completados</div></div>
+            </div>
+            <div class="mini-comm">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><div class="mini-comm-name">C/ Tarragona, 12</div><div class="mini-comm-meta">Ahorro: 6.300€ · 15,7%</div></div>
+                <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:var(--green-light);color:var(--green);font-weight:500;">Completado</span>
+              </div>
+              <div class="mini-prog"><div class="mini-prog-fill" style="width:100%"></div></div>
+            </div>
+            <div class="mini-comm">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><div class="mini-comm-name">C/ Reus, 7</div><div class="mini-comm-meta">En curso · 57% completado</div></div>
+                <span style="font-size:10px;padding:2px 8px;border-radius:20px;background:#FAEEDA;color:#854F0B;font-weight:500;">En curso</span>
+              </div>
+              <div class="mini-prog"><div class="mini-prog-fill" style="width:57%;background:#EF9F27"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <a href="app.html" class="btn-nav" style="font-size:14px;padding:12px 28px;">
+        <i class="ti ti-eye"></i>Ver el panel completo en acción
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIO -->
+<section class="testimonial-section section">
+  <div class="section-inner">
+    <div class="test-grid">
+      <div>
+        <div class="test-tag"><i class="ti ti-quote"></i>Caso real</div>
+        <p class="test-quote">"Como presidente de mi propia comunidad apliqué este método y ahorré 6.000€ sobre 40.000€ de presupuesto. Sin recortar ningún servicio."</p>
+        <div class="test-author">
+          <div class="test-avatar">I</div>
+          <div>
+            <div class="test-name">Ismael — Fundador de Trovi</div>
+            <div class="test-role">Salou, Tarragona</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-result-card">
+        <div class="trc-label">Ahorro conseguido</div>
+        <div class="trc-value">6.000€</div>
+        <div class="trc-sub">sobre un presupuesto de 40.000€/año</div>
+        <div class="trc-divider"></div>
+        <div class="trc-item"><span class="trc-item-label">Presupuesto inicial</span><span class="trc-item-value">40.000€</span></div>
+        <div class="trc-item"><span class="trc-item-label">Presupuesto optimizado</span><span class="trc-item-value">34.000€</span></div>
+        <div class="trc-item"><span class="trc-item-label">% de ahorro</span><span class="trc-item-value">15%</span></div>
+        <div class="trc-item"><span class="trc-item-label">Servicios eliminados</span><span class="trc-item-value">Ninguno</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contacto">
+  <div class="cta-inner">
+    <h2 class="cta-title">¿Hablamos?</h2>
+    <p class="cta-sub">Una conversación de 20 minutos para ver si tiene sentido trabajar juntos. Sin compromiso.</p>
+    <div class="cta-btns">
+      <a href="index.html#contacto" class="btn-hero-primary"><i class="ti ti-send"></i>Contactar ahora</a>
+      <a href="app.html" class="btn-hero-sec"><i class="ti ti-eye"></i>Ver el panel primero</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-logo">
+    <div class="nav-logo-mark" style="width:26px;height:26px;border-radius:6px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <span class="footer-logo-text">Trovi</span>
+  </a>
+  <div class="footer-copy">© 2025 Trovi · Salou, Tarragona</div>
+  <div class="footer-links">
+    <a href="index.html" class="footer-link">Inicio</a>
+    <a href="index.html#contacto" class="footer-link">Contacto</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trovi — Panel Nouambit Immobles</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --green: #0F6E56; --green-dark: #085041; --green-light: #E1F5EE; --green-mid: #1D9E75; --green-border: #9FE1CB;
+  --amber: #854F0B; --amber-light: #FAEEDA;
+  --blue: #185FA5; --blue-light: #E6F1FB;
+  --red: #A32D2D; --red-light: #FCEBEB;
+  --gray-900: #1A1A18; --gray-700: #3D3D3A; --gray-500: #6B6B67; --gray-300: #C8C8C2; --gray-100: #F4F2EB; --gray-50: #FAFAF7; --white: #FFFFFF;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --radius: 10px; --radius-lg: 16px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-900); display: flex; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: 240px; background: var(--white); border-right: 1px solid var(--gray-100); display: flex; flex-direction: column; flex-shrink: 0; min-height: 100vh; position: sticky; top: 0; }
+.sidebar-header { padding: 20px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 30px; height: 30px; background: var(--green); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.logo-mark svg { width: 17px; height: 17px; }
+.logo-text { font-family: var(--font-display); font-size: 18px; }
+.sidebar-user { padding: 14px 20px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--amber); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 15px; color: var(--white); flex-shrink: 0; }
+.user-name { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+.user-role { font-size: 11px; color: var(--gray-500); }
+.sidebar-nav { flex: 1; padding: 12px 0; }
+.nav-label { font-size: 10px; font-weight: 500; color: var(--gray-300); letter-spacing: .08em; text-transform: uppercase; padding: 8px 20px 4px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: var(--gray-500); cursor: pointer; border-left: 2px solid transparent; transition: all .15s; }
+.nav-item:hover { color: var(--green); background: var(--gray-50); }
+.nav-item.active { color: var(--green); font-weight: 500; background: var(--green-light); border-left-color: var(--green); }
+.nav-item i { font-size: 16px; }
+.nav-badge { margin-left: auto; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; background: var(--green-light); color: var(--green); }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--gray-100); }
+.btn-logout { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gray-500); cursor: pointer; background: none; border: none; font-family: var(--font-body); transition: color .2s; }
+.btn-logout:hover { color: var(--red); }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+.topbar { padding: 16px 28px; background: var(--white); border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+.topbar-title { font-family: var(--font-display); font-size: 20px; }
+.topbar-sub { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+.topbar-actions { display: flex; gap: 10px; }
+.btn-sm { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: var(--font-body); transition: all .2s; }
+.btn-green { background: var(--green); color: var(--white); }
+.btn-green:hover { background: var(--green-dark); }
+.btn-ghost { background: transparent; color: var(--gray-500); border: 1px solid var(--gray-300); }
+.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+.content { padding: 24px 28px; }
+
+/* ── STATS ── */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
+.stat { background: var(--white); border-radius: var(--radius-lg); padding: 18px 20px; border: 1px solid var(--gray-100); box-shadow: var(--shadow); }
+.stat-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; }
+.ic-green { background: var(--green-light); color: var(--green); }
+.ic-amber { background: var(--amber-light); color: var(--amber); }
+.ic-blue { background: var(--blue-light); color: var(--blue); }
+.ic-gray { background: var(--gray-100); color: var(--gray-500); }
+.stat-val { font-family: var(--font-display); font-size: 26px; color: var(--gray-900); margin-bottom: 3px; }
+.stat-val.green { color: var(--green); }
+.stat-lbl { font-size: 12px; color: var(--gray-500); }
+.stat-trend { font-size: 11px; margin-top: 5px; display: flex; align-items: center; gap: 3px; color: var(--green); }
+
+/* ── AHORRO BANNER ── */
+.saving-banner {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-mid) 100%);
+  border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--white);
+}
+.sb-left h3 { font-family: var(--font-display); font-size: 28px; margin-bottom: 4px; }
+.sb-left p { font-size: 13px; color: rgba(255,255,255,.65); }
+.sb-right { display: flex; gap: 32px; }
+.sb-stat { text-align: right; }
+.sb-val { font-family: var(--font-display); font-size: 24px; color: var(--white); }
+.sb-lbl { font-size: 11px; color: rgba(255,255,255,.55); }
+
+/* ── COMUNIDADES ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.section-title { font-size: 15px; font-weight: 500; color: var(--gray-900); display: flex; align-items: center; gap: 7px; }
+.section-title i { font-size: 17px; color: var(--green); }
+
+.community-card {
+  background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden;
+  transition: box-shadow .2s;
+}
+.community-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,.08); }
+.cc-header {
+  padding: 18px 22px; display: flex; align-items: flex-start; justify-content: space-between;
+  cursor: pointer; border-bottom: 1px solid var(--gray-100);
+}
+.cc-info {}
+.cc-name { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
+.cc-meta { font-size: 12px; color: var(--gray-500); display: flex; align-items: center; gap: 12px; }
+.cc-meta i { font-size: 13px; }
+.cc-right { display: flex; align-items: center; gap: 16px; }
+.cc-saving { text-align: right; }
+.cc-saving-val { font-family: var(--font-display); font-size: 22px; color: var(--green); }
+.cc-saving-lbl { font-size: 11px; color: var(--gray-500); }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 20px; }
+.b-green { background: var(--green-light); color: var(--green-dark); }
+.b-amber { background: var(--amber-light); color: var(--amber); }
+.b-blue { background: var(--blue-light); color: var(--blue); }
+.b-gray { background: var(--gray-100); color: var(--gray-500); }
+
+.cc-body { padding: 20px 22px; }
+.cc-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
+.cc-stat { background: var(--gray-50); border-radius: 9px; padding: 12px; text-align: center; }
+.cc-stat-val { font-size: 18px; font-weight: 500; color: var(--gray-900); }
+.cc-stat-val.green { color: var(--green); }
+.cc-stat-val.amber { color: var(--amber); }
+.cc-stat-lbl { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+
+/* Progress partidas */
+.partidas { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.partida { display: flex; align-items: center; gap: 12px; }
+.partida-name { font-size: 13px; color: var(--gray-700); width: 100px; flex-shrink: 0; }
+.partida-bar { flex: 1; height: 6px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+.partida-fill { height: 100%; border-radius: 3px; transition: width .6s; }
+.partida-amount { font-size: 12px; color: var(--gray-500); width: 70px; text-align: right; flex-shrink: 0; }
+.partida-saving { font-size: 12px; font-weight: 500; color: var(--green); width: 70px; text-align: right; flex-shrink: 0; }
+
+/* Milestones */
+.milestones { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+.milestone { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
+.milestone:last-child { border-bottom: none; }
+.m-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.m-done { background: var(--green); color: var(--white); }
+.m-active { background: var(--amber-light); color: var(--amber); border: 2px solid var(--amber); }
+.m-pending { background: var(--gray-100); color: var(--gray-300); font-size: 11px; font-weight: 500; }
+.m-text { flex: 1; }
+.m-title { font-size: 13px; font-weight: 500; color: var(--gray-900); margin-bottom: 2px; }
+.m-sub { font-size: 11px; color: var(--gray-500); }
+
+/* Documents */
+.docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.doc-card { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--gray-50); border-radius: 10px; border: 1px solid var(--gray-100); transition: border-color .2s, background .2s; cursor: pointer; }
+.doc-card:hover { border-color: var(--green-border); background: var(--green-light); }
+.doc-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.doc-info { flex: 1; }
+.doc-name { font-size: 13px; font-weight: 500; color: var(--gray-900); margin-bottom: 2px; }
+.doc-meta { font-size: 11px; color: var(--gray-500); }
+.doc-download { font-size: 18px; color: var(--gray-300); transition: color .2s; }
+.doc-card:hover .doc-download { color: var(--green); }
+
+/* Progress bar grande */
+.exp-progress { margin: 16px 0; }
+.ep-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray-500); margin-bottom: 6px; }
+.ep-bar { height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden; }
+.ep-fill { height: 100%; border-radius: 4px; background: var(--green); transition: width .6s; }
+.ep-fill.amber { background: var(--amber); }
+
+/* Toggle body */
+.cc-body.hidden { display: none; }
+.toggle-icon { font-size: 18px; color: var(--gray-300); transition: transform .2s; }
+.toggle-icon.open { transform: rotate(180deg); }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+.fade-up { animation: fadeUp .4s ease both; }
+.fade-up-1 { animation-delay: .05s; }
+.fade-up-2 { animation-delay: .1s; }
+.fade-up-3 { animation-delay: .15s; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span class="logo-text">Trovi</span>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar">N</div>
+    <div>
+      <div class="user-name">Nouambit Immobles</div>
+      <div class="user-role">Administrador · Solo lectura</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Mis comunidades</div>
+    <div class="nav-item active"><i class="ti ti-layout-dashboard"></i>Resumen general</div>
+    <div class="nav-item"><i class="ti ti-building"></i>Comunidades<span class="nav-badge">4</span></div>
+    <div class="nav-item"><i class="ti ti-file-export"></i>Informes y documentos</div>
+    <div class="nav-item"><i class="ti ti-chart-bar"></i>Histórico de ahorros</div>
+    <div class="nav-item"><i class="ti ti-calendar"></i>Vencimientos</div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="window.location.href='app.html'"><i class="ti ti-logout"></i>Cerrar sesión</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Panel Nouambit Immobles</div>
+      <div class="topbar-sub">4 comunidades en gestión · Actualizado hoy a las 09:14</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-sm btn-ghost" onclick="downloadAll()"><i class="ti ti-download"></i>Descargar todos los informes</button>
+      <button class="btn-sm btn-green"><i class="ti ti-send"></i>Contactar con Trovi</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Stats globales -->
+    <div class="stats fade-up">
+      <div class="stat">
+        <div class="stat-icon ic-blue"><i class="ti ti-building"></i></div>
+        <div class="stat-val">4</div>
+        <div class="stat-lbl">Comunidades activas</div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon ic-green"><i class="ti ti-trending-down"></i></div>
+        <div class="stat-val green">19.300€</div>
+        <div class="stat-lbl">Ahorro total conseguido</div>
+        <div class="stat-trend"><i class="ti ti-trending-up"></i>+4.200€ este mes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon ic-gray"><i class="ti ti-file-check"></i></div>
+        <div class="stat-val">2 / 4</div>
+        <div class="stat-lbl">Expedientes completados</div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon ic-amber"><i class="ti ti-file-export"></i></div>
+        <div class="stat-val">3</div>
+        <div class="stat-lbl">Informes disponibles</div>
+      </div>
+    </div>
+
+    <!-- Banner ahorro -->
+    <div class="saving-banner fade-up fade-up-1">
+      <div class="sb-left">
+        <h3>19.300€ ahorrados este año</h3>
+        <p>En tus 4 comunidades · Media del 14,8% de reducción de gastos</p>
+      </div>
+      <div class="sb-right">
+        <div class="sb-stat">
+          <div class="sb-val">133.000€</div>
+          <div class="sb-lbl">Presupuesto total gestionado</div>
+        </div>
+        <div class="sb-stat">
+          <div class="sb-val">14,8%</div>
+          <div class="sb-lbl">Ahorro medio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comunidades -->
+    <div class="fade-up fade-up-2">
+      <div class="section-header">
+        <div class="section-title"><i class="ti ti-building"></i>Estado de expedientes</div>
+      </div>
+
+      <!-- COMUNIDAD 1 — Completada -->
+      <div class="community-card">
+        <div class="cc-header" onclick="toggleCard('cc1')">
+          <div class="cc-info">
+            <div class="cc-name">C/ Tarragona, 12</div>
+            <div class="cc-meta"><i class="ti ti-home"></i>28 viviendas &nbsp;·&nbsp; <i class="ti ti-map-pin"></i>Tarragona &nbsp;·&nbsp; <i class="ti ti-calendar"></i>Completado en abril 2025</div>
+          </div>
+          <div class="cc-right">
+            <div class="cc-saving"><div class="cc-saving-val">6.300€</div><div class="cc-saving-lbl">ahorro anual</div></div>
+            <span class="badge b-green"><i class="ti ti-circle-check"></i>Completado</span>
+            <i class="ti ti-chevron-down toggle-icon open" id="icon-cc1"></i>
+          </div>
+        </div>
+        <div class="cc-body" id="cc1">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="cc-stat-val">40.000€</div><div class="cc-stat-lbl">Presupuesto anual</div></div>
+            <div class="cc-stat"><div class="cc-stat-val green">6.300€</div><div class="cc-stat-lbl">Ahorro conseguido</div></div>
+            <div class="cc-stat"><div class="cc-stat-val green">15,7%</div><div class="cc-stat-lbl">% reducción</div></div>
+            <div class="cc-stat"><div class="cc-stat-val">33.700€</div><div class="cc-stat-lbl">Nuevo presupuesto</div></div>
+          </div>
+
+          <div style="font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:10px;">Ahorro por partida</div>
+          <div class="partidas">
+            <div class="partida">
+              <span class="partida-name">Limpieza</span>
+              <div class="partida-bar"><div class="partida-fill" style="width:78%;background:#0F6E56"></div></div>
+              <span class="partida-amount">11.200€</span>
+              <span class="partida-saving">−2.100€</span>
+            </div>
+            <div class="partida">
+              <span class="partida-name">Seguro</span>
+              <div class="partida-bar"><div class="partida-fill" style="width:55%;background:#1D9E75"></div></div>
+              <span class="partida-amount">6.720€</span>
+              <span class="partida-saving">−1.800€</span>
+            </div>
+            <div class="partida">
+              <span class="partida-name">Electricidad</span>
+              <div class="partida-bar"><div class="partida-fill" style="width:40%;background:#9FE1CB"></div></div>
+              <span class="partida-amount">5.040€</span>
+              <span class="partida-saving">−1.200€</span>
+            </div>
+            <div class="partida">
+              <span class="partida-name">Jardín</span>
+              <div class="partida-bar"><div class="partida-fill" style="width:25%;background:#C8C8C2"></div></div>
+              <span class="partida-amount">3.200€</span>
+              <span class="partida-saving">−600€</span>
+            </div>
+          </div>
+
+          <div style="font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:10px;">Documentos disponibles</div>
+          <div class="docs-grid">
+            <div class="doc-card">
+              <div class="doc-icon" style="background:#FCEBEB;color:#A32D2D"><i class="ti ti-file-type-pdf"></i></div>
+              <div class="doc-info"><div class="doc-name">Informe de auditoría</div><div class="doc-meta">PDF · 2,4 MB · Abril 2025</div></div>
+              <i class="ti ti-download doc-download"></i>
+            </div>
+            <div class="doc-card">
+              <div class="doc-icon" style="background:#E6F1FB;color:#185FA5"><i class="ti ti-file-type-doc"></i></div>
+              <div class="doc-info"><div class="doc-name">Informe Word editable</div><div class="doc-meta">DOCX · 1,1 MB · Abril 2025</div></div>
+              <i class="ti ti-download doc-download"></i>
+            </div>
+            <div class="doc-card">
+              <div class="doc-icon" style="background:#E1F5EE;color:#0F6E56"><i class="ti ti-table"></i></div>
+              <div class="doc-info"><div class="doc-name">Comparativa de contratos</div><div class="doc-meta">Excel · 890 KB · Abril 2025</div></div>
+              <i class="ti ti-download doc-download"></i>
+            </div>
+            <div class="doc-card">
+              <div class="doc-icon" style="background:#FAEEDA;color:#854F0B"><i class="ti ti-writing"></i></div>
+              <div class="doc-info"><div class="doc-name">Acta de presentación junta</div><div class="doc-meta">PDF · 680 KB · Mayo 2025</div></div>
+              <i class="ti ti-download doc-download"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMUNIDAD 2 — Completada -->
+      <div class="community-card">
+        <div class="cc-header" onclick="toggleCard('cc2')">
+          <div class="cc-info">
+            <div class="cc-name">Av. Salou, 34</div>
+            <div class="cc-meta"><i class="ti ti-home"></i>20 viviendas &nbsp;·&nbsp; <i class="ti ti-map-pin"></i>Salou &nbsp;·&nbsp; <i class="ti ti-calendar"></i>Completado en marzo 2025</div>
+          </div>
+          <div class="cc-right">
+            <div class="cc-saving"><div class="cc-saving-val">4.800€</div><div class="cc-saving-lbl">ahorro anual</div></div>
+            <span class="badge b-green"><i class="ti ti-circle-check"></i>Completado</span>
+            <i class="ti ti-chevron-down toggle-icon" id="icon-cc2"></i>
+          </div>
+        </div>
+        <div class="cc-body hidden" id="cc2">
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="cc-stat-val">32.000€</div><div class="cc-stat-lbl">Presupuesto anual</div></div>
+            <div class="cc-stat"><div class="cc-stat-val green">4.800€</div><div class="cc-stat-lbl">Ahorro conseguido</div></div>
+            <div class="cc-stat"><div class="cc-stat-val green">15%</div><div class="cc-stat-lbl">% reducción</div></div>
+            <div class="cc-stat"><div class="cc-stat-val">27.200€</div><div class="cc-stat-lbl">Nuevo presupuesto</div></div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:10px;">Documentos disponibles</div>
+          <div class="docs-grid">
+            <div class="doc-card">
+              <div class="doc-icon" style="background:#FCEBEB;color:#A32D2D"><i class="ti ti-file-type-pdf"></i></div>
+              <div class="doc-info"><div class="doc-name">Informe de auditoría</div><div class="doc-meta">PDF · 2,1 MB · Marzo 2025</div></div>
+              <i class="ti ti-download doc-download"></i>
+            </div>
+            <div class="doc-card">
+              <div class="doc-icon" style="background:#E6F1FB;color:#185FA5"><i class="ti ti-file-type-doc"></i></div>
+              <div class="doc-info"><div class="doc-name">Informe Word editable</div><div class="doc-meta">DOCX · 980 KB · Marzo 2025</div></div>
+              <i class="ti ti-download doc-download"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMUNIDAD 3 — En curso -->
+      <div class="community-card">
+        <div class="cc-header" onclick="toggleCard('cc3')">
+          <div class="cc-info">
+            <div class="cc-name">C/ Reus, 7</div>
+            <div class="cc-meta"><i class="ti ti-home"></i>15 viviendas &nbsp;·&nbsp; <i class="ti ti-map-pin"></i>Tarragona &nbsp;·&nbsp; <i class="ti ti-loader"></i>En curso desde mayo 2025</div>
+          </div>
+          <div class="cc-right">
+            <div class="cc-saving"><div class="cc-saving-val" style="color:var(--amber)">~2.800€</div><div class="cc-saving-lbl">estimado</div></div>
+            <span class="badge b-amber"><i class="ti ti-clock"></i>En curso · 57%</span>
+            <i class="ti ti-chevron-down toggle-icon open" id="icon-cc3"></i>
+          </div>
+        </div>
+        <div class="cc-body" id="cc3">
+          <div class="exp-progress">
+            <div class="ep-header"><span>Progreso del expediente</span><span>4 de 7 partidas completadas</span></div>
+            <div class="ep-bar"><div class="ep-fill amber" style="width:57%"></div></div>
+          </div>
+          <div style="font-size:13px;font-weight:500;color:var(--gray-700);margin:16px 0 10px;">Estado por partida</div>
+          <div class="milestones">
+            <div class="milestone">
+              <div class="m-dot m-done"><i class="ti ti-check" style="font-size:12px;"></i></div>
+              <div class="m-text"><div class="m-title">Limpieza — Revisado y negociado</div><div class="m-sub">3 presupuestos comparados · Ahorro estimado: 1.200€/año</div></div>
+              <span class="badge b-green">Listo</span>
+            </div>
+            <div class="milestone">
+              <div class="m-dot m-done"><i class="ti ti-check" style="font-size:12px;"></i></div>
+              <div class="m-text"><div class="m-title">Seguro de comunidad — Revisado</div><div class="m-sub">2 alternativas analizadas · Ahorro estimado: 920€/año</div></div>
+              <span class="badge b-green">Listo</span>
+            </div>
+            <div class="milestone">
+              <div class="m-dot m-done"><i class="ti ti-check" style="font-size:12px;"></i></div>
+              <div class="m-text"><div class="m-title">Jardín — Sin margen de mejora</div><div class="m-sub">Precio de mercado competitivo · Se mantiene proveedor actual</div></div>
+              <span class="badge b-gray">Sin cambios</span>
+            </div>
+            <div class="milestone">
+              <div class="m-dot m-done"><i class="ti ti-check" style="font-size:12px;"></i></div>
+              <div class="m-text"><div class="m-title">Suministros agua — Revisado</div><div class="m-sub">Tarifa optimizada · Ahorro estimado: 480€/año</div></div>
+              <span class="badge b-green">Listo</span>
+            </div>
+            <div class="milestone">
+              <div class="m-dot m-active">5</div>
+              <div class="m-text"><div class="m-title">Ascensor — En proceso</div><div class="m-sub">Pendiente recibir presupuesto alternativo de empresa 2</div></div>
+              <span class="badge b-amber">Pendiente</span>
+            </div>
+            <div class="milestone">
+              <div class="m-dot m-pending">6</div>
+              <div class="m-text"><div class="m-title">Electricidad — Sin iniciar</div><div class="m-sub">Inicio previsto: próxima semana</div></div>
+              <span class="badge b-gray">Sin iniciar</span>
+            </div>
+            <div class="milestone">
+              <div class="m-dot m-pending">7</div>
+              <div class="m-text"><div class="m-title">Portería / conserjería — Sin iniciar</div><div class="m-sub">Pendiente de revisión</div></div>
+              <span class="badge b-gray">Sin iniciar</span>
+            </div>
+          </div>
+          <div style="background:var(--amber-light);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--amber);display:flex;align-items:center;gap:8px;">
+            <i class="ti ti-clock" style="font-size:16px;flex-shrink:0;"></i>
+            El informe final estará disponible para descargar cuando se complete el expediente. Estimación: 2-3 semanas.
+          </div>
+        </div>
+      </div>
+
+      <!-- COMUNIDAD 4 — Nueva -->
+      <div class="community-card">
+        <div class="cc-header" onclick="toggleCard('cc4')">
+          <div class="cc-info">
+            <div class="cc-name">Av. Catalunya, 18</div>
+            <div class="cc-meta"><i class="ti ti-home"></i>22 viviendas &nbsp;·&nbsp; <i class="ti ti-map-pin"></i>Tarragona &nbsp;·&nbsp; <i class="ti ti-calendar"></i>Iniciado esta semana</div>
+          </div>
+          <div class="cc-right">
+            <div class="cc-saving"><div class="cc-saving-val" style="color:var(--gray-300)">—</div><div class="cc-saving-lbl">pendiente</div></div>
+            <span class="badge b-blue"><i class="ti ti-sparkles"></i>Recién iniciado</span>
+            <i class="ti ti-chevron-down toggle-icon" id="icon-cc4"></i>
+          </div>
+        </div>
+        <div class="cc-body hidden" id="cc4">
+          <div style="background:var(--blue-light);border-radius:var(--radius);padding:16px;font-size:13px;color:var(--blue);display:flex;align-items:flex-start;gap:10px;">
+            <i class="ti ti-info-circle" style="font-size:18px;flex-shrink:0;margin-top:1px;"></i>
+            <div>
+              <div style="font-weight:500;margin-bottom:4px;">Expediente recién abierto</div>
+              El equipo de Trovi está revisando el presupuesto anual y los contratos actuales. En los próximos días recibirás el primer análisis con las partidas identificadas y el ahorro potencial estimado.
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;">
+            <div class="cc-stat"><div class="cc-stat-val">36.000€</div><div class="cc-stat-lbl">Presupuesto declarado</div></div>
+            <div class="cc-stat"><div class="cc-stat-val amber">~4.000€</div><div class="cc-stat-lbl">Ahorro estimado inicial</div></div>
+            <div class="cc-stat"><div class="cc-stat-val">7</div><div class="cc-stat-lbl">Contratos a revisar</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleCard(id) {
+  const body = document.getElementById(id);
+  const icon = document.getElementById('icon-' + id);
+  body.classList.toggle('hidden');
+  icon.classList.toggle('open');
+}
+
+function downloadAll() {
+  alert('En la versión final, esto descargará un ZIP con todos los informes disponibles.');
+}
+</script>
+</body>
+</html>
