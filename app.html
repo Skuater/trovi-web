@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trovi — Panel de gestión</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root {
+  --green: #0F6E56;
+  --green-dark: #085041;
+  --green-light: #E1F5EE;
+  --green-mid: #1D9E75;
+  --green-border: #9FE1CB;
+  --amber: #854F0B;
+  --amber-light: #FAEEDA;
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --red: #A32D2D;
+  --red-light: #FCEBEB;
+  --gray-900: #1A1A18;
+  --gray-700: #3D3D3A;
+  --gray-500: #6B6B67;
+  --gray-300: #C8C8C2;
+  --gray-100: #F4F2EB;
+  --gray-50: #FAFAF7;
+  --white: #FFFFFF;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--gray-50); color: var(--gray-900); -webkit-font-smoothing: antialiased; }
+
+/* ── SCREENS ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* ══════════════════════════════════
+   LOGIN
+══════════════════════════════════ */
+#screen-login {
+  background: var(--gray-900);
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+#screen-login::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(15,110,86,0.15) 0%, transparent 70%);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+}
+#screen-login::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(15,110,86,0.08) 0%, transparent 70%);
+  bottom: -50px; left: -50px;
+  border-radius: 50%;
+}
+.login-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 48px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(20px);
+}
+.login-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 36px;
+}
+.login-logo-mark {
+  width: 36px; height: 36px;
+  background: var(--green);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+.login-logo-mark svg { width: 20px; height: 20px; }
+.login-logo-text {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--white);
+}
+.login-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.login-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 32px;
+}
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.form-input {
+  width: 100%; padding: 12px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.form-input::placeholder { color: rgba(255,255,255,0.25); }
+.form-input:focus {
+  border-color: var(--green-mid);
+  background: rgba(255,255,255,0.09);
+}
+.forgot-link {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: var(--green-mid);
+  text-decoration: none;
+  margin-top: -8px;
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+.forgot-link:hover { color: var(--green-border); }
+.btn-login {
+  width: 100%; padding: 13px;
+  background: var(--green);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px; font-weight: 500;
+  border: none; border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  margin-bottom: 20px;
+}
+.btn-login:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+/* Demo shortcuts */
+.demo-section {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 20px;
+  margin-top: 4px;
+}
+.demo-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.demo-btns { display: flex; gap: 8px; }
+.demo-btn {
+  flex: 1; padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--font-body);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.demo-btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
+
+/* Recuperar contraseña panel */
+.forgot-panel {
+  display: none;
+  text-align: center;
+}
+.forgot-panel.active { display: block; }
+.login-form.hidden { display: none; }
+.forgot-back {
+  font-size: 13px; color: var(--green-mid);
+  cursor: pointer; margin-top: 16px; display: inline-block;
+}
+
+/* ══════════════════════════════════
+   APP LAYOUT
+══════════════════════════════════ */
+#screen-admin, #screen-worker, #screen-client {
+  flex-direction: row;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: var(--white);
+  border-right: 1px solid var(--gray-100);
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+  min-height: 100vh;
+}
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-logo-mark {
+  width: 30px; height: 30px;
+  background: var(--green);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sidebar-logo-mark svg { width: 17px; height: 17px; }
+.sidebar-logo-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--gray-900);
+}
+.sidebar-user {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 10px;
+}
+.user-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 14px; color: var(--white);
+  flex-shrink: 0;
+}
+.avatar-admin { background: var(--green); }
+.avatar-worker { background: var(--blue); }
+.avatar-client { background: var(--amber); }
+.user-name { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+.user-role { font-size: 11px; color: var(--gray-500); }
+.sidebar-nav { flex: 1; padding: 12px 0; }
+.nav-section-label {
+  font-size: 10px; font-weight: 500;
+  color: var(--gray-300);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 8px 20px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px;
+  font-size: 13px; color: var(--gray-500);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .15s;
+}
+.nav-item:hover { color: var(--green); background: var(--gray-50); }
+.nav-item.active {
+  color: var(--green); font-weight: 500;
+  background: var(--green-light);
+  border-left-color: var(--green);
+}
+.nav-item i { font-size: 16px; }
+.nav-badge {
+  margin-left: auto;
+  font-size: 10px; font-weight: 500;
+  padding: 2px 7px; border-radius: 20px;
+  background: var(--green-light); color: var(--green);
+}
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--gray-100);
+}
+.btn-logout {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--gray-500);
+  cursor: pointer; background: none; border: none;
+  font-family: var(--font-body);
+  transition: color .2s;
+}
+.btn-logout:hover { color: var(--red); }
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.topbar {
+  padding: 16px 28px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-title { font-family: var(--font-display); font-size: 20px; color: var(--gray-900); }
+.topbar-sub { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+.btn-action {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-size: 13px; font-weight: 500;
+  cursor: pointer; border: none;
+  font-family: var(--font-body);
+  transition: all .2s;
+}
+.btn-primary-sm { background: var(--green); color: var(--white); }
+.btn-primary-sm:hover { background: var(--green-dark); }
+.btn-ghost { background: transparent; color: var(--gray-500); border: 1px solid var(--gray-300); }
+.btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+.content-area { padding: 24px 28px; }
+
+/* ── STAT CARDS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.stats-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow);
+}
+.stat-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+.icon-green { background: var(--green-light); color: var(--green); }
+.icon-amber { background: var(--amber-light); color: var(--amber); }
+.icon-blue { background: var(--blue-light); color: var(--blue); }
+.icon-gray { background: var(--gray-100); color: var(--gray-500); }
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--gray-900);
+  margin-bottom: 3px;
+}
+.stat-value.green { color: var(--green); }
+.stat-value.amber { color: var(--amber); }
+.stat-label { font-size: 12px; color: var(--gray-500); }
+.stat-trend {
+  font-size: 11px; margin-top: 6px;
+  display: flex; align-items: center; gap: 4px;
+}
+.trend-up { color: var(--green); }
+.trend-down { color: var(--red); }
+
+/* ── PANELS ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.three-col { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 14px; }
+.panel {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title { font-size: 14px; font-weight: 500; color: var(--gray-900); display: flex; align-items: center; gap: 7px; }
+.panel-title i { font-size: 16px; color: var(--green); }
+.panel-action { font-size: 12px; color: var(--green); cursor: pointer; }
+.panel-body { padding: 16px 20px; }
+
+/* ── TABLE ── */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 11px; font-weight: 500;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-100);
+  background: var(--gray-50);
+}
+.data-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--gray-700);
+  border-bottom: 1px solid var(--gray-100);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--gray-50); }
+.td-name { font-weight: 500; color: var(--gray-900); }
+.td-green { color: var(--green); font-weight: 500; }
+.td-amber { color: var(--amber); font-weight: 500; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 500;
+  padding: 3px 9px; border-radius: 20px;
+}
+.badge-green { background: var(--green-light); color: var(--green-dark); }
+.badge-amber { background: var(--amber-light); color: var(--amber); }
+.badge-blue { background: var(--blue-light); color: var(--blue); }
+.badge-gray { background: var(--gray-100); color: var(--gray-500); }
+.badge-red { background: var(--red-light); color: var(--red); }
+
+/* ── PROGRESS ── */
+.progress-wrap { margin: 6px 0; }
+.progress-bar {
+  height: 5px; background: var(--gray-100);
+  border-radius: 3px; overflow: hidden;
+}
+.progress-fill { height: 100%; border-radius: 3px; background: var(--green); transition: width .5s; }
+.progress-fill.amber { background: var(--amber); }
+.progress-fill.blue { background: var(--blue); }
+
+/* ── TASK ITEM ── */
+.task-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.task-item:last-child { border-bottom: none; }
+.task-check {
+  width: 18px; height: 18px;
+  border-radius: 50%; border: 1.5px solid var(--gray-300);
+  flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s;
+}
+.task-check.done { background: var(--green); border-color: var(--green); }
+.task-check.done::after { content: '✓'; font-size: 10px; color: white; }
+.task-text { font-size: 13px; color: var(--gray-700); flex: 1; line-height: 1.4; }
+.task-text.done { text-decoration: line-through; color: var(--gray-300); }
+.task-meta { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+.task-priority {
+  font-size: 10px; padding: 2px 7px; border-radius: 20px;
+  flex-shrink: 0; margin-top: 2px;
+}
+
+/* ── WORKER CARD ── */
+.worker-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.worker-row:last-child { border-bottom: none; }
+.worker-avatar-sm {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500; color: white;
+  flex-shrink: 0;
+}
+.worker-info { flex: 1; }
+.worker-name { font-size: 13px; font-weight: 500; color: var(--gray-900); }
+.worker-communities { font-size: 11px; color: var(--gray-500); }
+.worker-bonus { font-size: 13px; font-weight: 500; color: var(--green); text-align: right; }
+.worker-bonus-label { font-size: 10px; color: var(--gray-500); }
+
+/* ── DOCUMENT ROW ── */
+.doc-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.doc-row:last-child { border-bottom: none; }
+.doc-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.doc-name { font-size: 13px; font-weight: 500; color: var(--gray-900); flex: 1; }
+.doc-sub { font-size: 11px; color: var(--gray-500); }
+.doc-action { font-size: 12px; color: var(--green); cursor: pointer; }
+
+/* ── ALERT BOX ── */
+.alert {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.alert-amber { background: var(--amber-light); color: var(--amber); }
+.alert-green { background: var(--green-light); color: var(--green-dark); }
+.alert i { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── EXPEDIENTE CARD ── */
+.exp-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-100);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.exp-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.exp-name { font-size: 15px; font-weight: 500; color: var(--gray-900); margin-bottom: 3px; }
+.exp-meta { font-size: 12px; color: var(--gray-500); }
+.exp-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.exp-stat { text-align: center; padding: 10px; background: var(--gray-50); border-radius: 8px; }
+.exp-stat-val { font-size: 16px; font-weight: 500; color: var(--gray-900); }
+.exp-stat-val.green { color: var(--green); }
+.exp-stat-lbl { font-size: 10px; color: var(--gray-500); margin-top: 2px; }
+
+/* ── CLIENT PROGRESS ── */
+.milestone {
+  display: flex; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.milestone:last-child { border-bottom: none; }
+.milestone-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0; margin-top: 1px;
+}
+.m-done { background: var(--green); color: white; }
+.m-active { background: var(--amber-light); color: var(--amber); border: 2px solid var(--amber); }
+.m-pending { background: var(--gray-100); color: var(--gray-300); }
+.milestone-text { flex: 1; }
+.milestone-title { font-size: 13px; font-weight: 500; color: var(--gray-900); margin-bottom: 2px; }
+.milestone-sub { font-size: 11px; color: var(--gray-500); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.fade-up { animation: fadeUp .4s ease both; }
+.fade-up-1 { animation-delay: .05s; }
+.fade-up-2 { animation-delay: .1s; }
+.fade-up-3 { animation-delay: .15s; }
+.fade-up-4 { animation-delay: .2s; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     LOGIN
+══════════════════════════════════ -->
+<div id="screen-login" class="screen active">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span class="login-logo-text">Trovi</span>
+    </div>
+
+    <!-- Formulario principal -->
+    <div class="login-form" id="loginForm">
+      <h1 class="login-title">Bienvenido</h1>
+      <p class="login-sub">Accede a tu panel de gestión</p>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="tu@trovi.es">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contraseña</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+      <a class="forgot-link" onclick="showForgot()">¿Olvidaste tu contraseña?</a>
+      <button class="btn-login" onclick="handleLogin()">Entrar</button>
+
+      <div class="demo-section">
+        <div class="demo-label">Acceso de demostración</div>
+        <div class="demo-btns">
+          <button class="demo-btn" onclick="goTo('admin')"><i class="ti ti-crown"></i>Admin</button>
+          <button class="demo-btn" onclick="goTo('worker')"><i class="ti ti-tool"></i>Trabajador</button>
+          <button class="demo-btn" onclick="goTo('client')"><i class="ti ti-building"></i>Cliente</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel recuperar contraseña -->
+    <div class="forgot-panel" id="forgotPanel">
+      <h1 class="login-title" style="margin-bottom:8px;">Recuperar acceso</h1>
+      <p class="login-sub">Te enviaremos un enlace a tu email para restablecer la contraseña.</p>
+      <div class="form-group" style="margin-top:24px;">
+        <label class="form-label">Email</label>
+        <input class="form-input" type="email" placeholder="tu@trovi.es">
+      </div>
+      <button class="btn-login" onclick="showForgotConfirm()">Enviar enlace</button>
+      <a class="forgot-back" onclick="showLogin()">← Volver al login</a>
+    </div>
+
+    <!-- Confirmación -->
+    <div class="forgot-panel" id="forgotConfirm">
+      <div style="font-size:48px;margin-bottom:16px;">📬</div>
+      <h1 class="login-title" style="margin-bottom:8px;">Email enviado</h1>
+      <p class="login-sub">Revisa tu bandeja de entrada y sigue las instrucciones para restablecer tu contraseña.</p>
+      <a class="forgot-back" onclick="showLogin()" style="margin-top:24px;">← Volver al login</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL ADMINISTRADOR
+══════════════════════════════════ -->
+<div id="screen-admin" class="screen">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span class="sidebar-logo-text">Trovi</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar avatar-admin">I</div>
+      <div>
+        <div class="user-name">Ismael</div>
+        <div class="user-role">Administrador</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Gestión</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+      <div class="nav-item"><i class="ti ti-building"></i>Comunidades<span class="nav-badge">12</span></div>
+      <div class="nav-item"><i class="ti ti-file-text"></i>Expedientes</div>
+      <div class="nav-item"><i class="ti ti-briefcase"></i>Proveedores</div>
+      <div class="nav-section-label">Equipo</div>
+      <div class="nav-item"><i class="ti ti-users"></i>Trabajadores</div>
+      <div class="nav-item"><i class="ti ti-coin"></i>Comisiones</div>
+      <div class="nav-section-label">Informes</div>
+      <div class="nav-item"><i class="ti ti-chart-bar"></i>Ahorros</div>
+      <div class="nav-item"><i class="ti ti-calendar"></i>Vencimientos<span class="nav-badge">3</span></div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="goTo('login')"><i class="ti ti-logout"></i>Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-sub">Resumen general · Mayo 2025</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-action btn-ghost"><i class="ti ti-bell"></i></button>
+        <button class="btn-action btn-primary-sm"><i class="ti ti-plus"></i>Nueva comunidad</button>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <!-- Stats -->
+      <div class="stats-grid fade-up">
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="ti ti-building"></i></div>
+          <div class="stat-value">12</div>
+          <div class="stat-label">Comunidades activas</div>
+          <div class="stat-trend trend-up"><i class="ti ti-trending-up"></i>+3 este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="ti ti-trending-down"></i></div>
+          <div class="stat-value green">68.400€</div>
+          <div class="stat-label">Ahorro total generado</div>
+          <div class="stat-trend trend-up"><i class="ti ti-trending-up"></i>+12% vs mes anterior</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-amber"><i class="ti ti-coin"></i></div>
+          <div class="stat-value amber">20.520€</div>
+          <div class="stat-label">Comisiones generadas</div>
+          <div class="stat-trend trend-up"><i class="ti ti-trending-up"></i>30% del ahorro</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="ti ti-users"></i></div>
+          <div class="stat-value">2</div>
+          <div class="stat-label">Trabajadores activos</div>
+          <div class="stat-trend"><i class="ti ti-clock"></i>1 pendiente de alta</div>
+        </div>
+      </div>
+
+      <!-- Alertas -->
+      <div class="alert alert-amber fade-up fade-up-1">
+        <i class="ti ti-bell-ringing"></i>
+        <div><strong>3 contratos vencen en menos de 90 días</strong> — Limpieza Av. Roma, Ascensor C/ Reus y Seguro Pg. Marítim. Revisar alternativas.</div>
+      </div>
+
+      <div class="three-col fade-up fade-up-2">
+        <!-- Comunidades recientes -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><i class="ti ti-building"></i>Comunidades activas</div>
+            <span class="panel-action">Ver todas</span>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Comunidad</th><th>Presup.</th><th>Ahorro</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><div class="td-name">C/ Tarragona, 12</div><div style="font-size:11px;color:var(--gray-500)">28 viviendas</div></td><td>40.000€</td><td class="td-green">6.300€</td><td><span class="badge badge-green">Activo</span></td></tr>
+              <tr><td><div class="td-name">Av. Salou, 34</div><div style="font-size:11px;color:var(--gray-500)">20 viviendas</div></td><td>32.000€</td><td class="td-green">4.800€</td><td><span class="badge badge-green">Activo</span></td></tr>
+              <tr><td><div class="td-name">C/ Reus, 7</div><div style="font-size:11px;color:var(--gray-500)">15 viviendas</div></td><td>24.000€</td><td class="td-amber">En curso</td><td><span class="badge badge-amber">Auditoría</span></td></tr>
+              <tr><td><div class="td-name">Pg. Marítim, 5</div><div style="font-size:11px;color:var(--gray-500)">35 viviendas</div></td><td>55.000€</td><td class="td-green">8.200€</td><td><span class="badge badge-green">Activo</span></td></tr>
+              <tr><td><div class="td-name">Av. Catalunya, 18</div><div style="font-size:11px;color:var(--gray-500)">22 viviendas</div></td><td>36.000€</td><td class="td-amber">—</td><td><span class="badge badge-blue">Nueva</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Trabajadores y vencimientos -->
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><i class="ti ti-users"></i>Trabajadores</div>
+              <span class="panel-action">Gestionar</span>
+            </div>
+            <div class="panel-body">
+              <div class="worker-row">
+                <div class="worker-avatar-sm" style="background:var(--blue)">M</div>
+                <div class="worker-info">
+                  <div class="worker-name">María González</div>
+                  <div class="worker-communities">5 comunidades · 28.400€ ahorro</div>
+                  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill blue" style="width:71%"></div></div></div>
+                </div>
+                <div>
+                  <div class="worker-bonus">420€</div>
+                  <div class="worker-bonus-label">bonus acum.</div>
+                </div>
+              </div>
+              <div class="worker-row">
+                <div class="worker-avatar-sm" style="background:var(--green)">J</div>
+                <div class="worker-info">
+                  <div class="worker-name">Jordi Puig</div>
+                  <div class="worker-communities">4 comunidades · 21.600€ ahorro</div>
+                  <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:54%"></div></div></div>
+                </div>
+                <div>
+                  <div class="worker-bonus">280€</div>
+                  <div class="worker-bonus-label">bonus acum.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title"><i class="ti ti-calendar"></i>Vencimientos próximos</div>
+            </div>
+            <div class="panel-body">
+              <div class="doc-row">
+                <div class="doc-icon" style="background:var(--red-light);color:var(--red)"><i class="ti ti-alert-circle"></i></div>
+                <div><div class="doc-name">Limpieza · Av. Roma</div><div class="doc-sub">Vence en 18 días</div></div>
+                <span class="badge badge-red">Urgente</span>
+              </div>
+              <div class="doc-row">
+                <div class="doc-icon" style="background:var(--amber-light);color:var(--amber)"><i class="ti ti-clock"></i></div>
+                <div><div class="doc-name">Ascensor · C/ Reus</div><div class="doc-sub">Vence en 45 días</div></div>
+                <span class="badge badge-amber">Pronto</span>
+              </div>
+              <div class="doc-row">
+                <div class="doc-icon" style="background:var(--amber-light);color:var(--amber)"><i class="ti ti-clock"></i></div>
+                <div><div class="doc-name">Seguro · Pg. Marítim</div><div class="doc-sub">Vence en 72 días</div></div>
+                <span class="badge badge-amber">Pronto</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL TRABAJADOR
+══════════════════════════════════ -->
+<div id="screen-worker" class="screen">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span class="sidebar-logo-text">Trovi</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar avatar-worker">M</div>
+      <div>
+        <div class="user-name">María González</div>
+        <div class="user-role">Trabajadora</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Mi trabajo</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard"></i>Mi panel</div>
+      <div class="nav-item"><i class="ti ti-file-text"></i>Mis expedientes<span class="nav-badge">5</span></div>
+      <div class="nav-item"><i class="ti ti-upload"></i>Subir documentos</div>
+      <div class="nav-section-label">Rendimiento</div>
+      <div class="nav-item"><i class="ti ti-chart-bar"></i>Mis ahorros</div>
+      <div class="nav-item"><i class="ti ti-coin"></i>Mi bonus</div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="goTo('login')"><i class="ti ti-logout"></i>Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Mi panel</div>
+        <div class="topbar-sub">Hola María · Mayo 2025</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-action btn-primary-sm"><i class="ti ti-upload"></i>Subir documento</button>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <!-- Stats trabajador -->
+      <div class="stats-grid stats-grid-3 fade-up">
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="ti ti-building"></i></div>
+          <div class="stat-value">5</div>
+          <div class="stat-label">Mis comunidades</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="ti ti-trending-down"></i></div>
+          <div class="stat-value green">28.400€</div>
+          <div class="stat-label">Ahorro generado</div>
+          <div class="stat-trend trend-up"><i class="ti ti-trending-up"></i>+4.200€ este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-amber"><i class="ti ti-gift"></i></div>
+          <div class="stat-value amber">420€</div>
+          <div class="stat-label">Bonus acumulado</div>
+          <div class="stat-trend"><i class="ti ti-info-circle"></i>Se aplica en nómina</div>
+        </div>
+      </div>
+
+      <div class="two-col fade-up fade-up-1">
+        <!-- Mis expedientes -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><i class="ti ti-file-text"></i>Mis expedientes</div>
+            <span class="panel-action">Ver todos</span>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div class="exp-card" style="margin:14px 14px 0;box-shadow:none;border-color:var(--gray-100);">
+              <div class="exp-header">
+                <div><div class="exp-name">C/ Tarragona, 12</div><div class="exp-meta">28 viviendas · Nouambit Immobles</div></div>
+                <span class="badge badge-green">Completado</span>
+              </div>
+              <div class="progress-wrap">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500);margin-bottom:4px;"><span>Progreso del expediente</span><span>7/7 documentos</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+              </div>
+            </div>
+            <div class="exp-card" style="margin:10px 14px 0;box-shadow:none;border-color:var(--gray-100);">
+              <div class="exp-header">
+                <div><div class="exp-name">Av. Salou, 34</div><div class="exp-meta">20 viviendas · Finques Tàrraco</div></div>
+                <span class="badge badge-green">Completado</span>
+              </div>
+              <div class="progress-wrap">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500);margin-bottom:4px;"><span>Progreso del expediente</span><span>7/7 documentos</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+              </div>
+            </div>
+            <div class="exp-card" style="margin:10px 14px 14px;box-shadow:none;border-color:var(--green-border);">
+              <div class="exp-header">
+                <div><div class="exp-name">C/ Reus, 7</div><div class="exp-meta">15 viviendas · Nouambit Immobles</div></div>
+                <span class="badge badge-amber">En curso</span>
+              </div>
+              <div class="progress-wrap">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gray-500);margin-bottom:4px;"><span>Progreso del expediente</span><span>4/7 documentos</span></div>
+                <div class="progress-bar"><div class="progress-fill amber" style="width:57%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tareas pendientes -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title"><i class="ti ti-checklist"></i>Tareas pendientes</div>
+            <span class="badge badge-amber">4 pendientes</span>
+          </div>
+          <div class="panel-body">
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div>
+                <div class="task-text">Subir presupuesto alternativo de limpieza — C/ Reus, 7</div>
+                <div class="task-meta">C/ Reus, 7 · Vence hoy</div>
+              </div>
+              <span class="badge badge-red task-priority">Urgente</span>
+            </div>
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div>
+                <div class="task-text">Revisar contrato de ascensor y pedir 2 presupuestos</div>
+                <div class="task-meta">C/ Reus, 7 · Esta semana</div>
+              </div>
+              <span class="badge badge-amber task-priority">Pronto</span>
+            </div>
+            <div class="task-item">
+              <div class="task-check"></div>
+              <div>
+                <div class="task-text">Contactar a Mutua Seguros para presupuesto anual</div>
+                <div class="task-meta">Av. Catalunya, 18 · Esta semana</div>
+              </div>
+              <span class="badge badge-amber task-priority">Pronto</span>
+            </div>
+            <div class="task-item">
+              <div class="task-check done"></div>
+              <div>
+                <div class="task-text done">Enviar informe final a Nouambit — Av. Salou</div>
+                <div class="task-meta">Completado ayer</div>
+              </div>
+              <span class="badge badge-green task-priority">Hecho</span>
+            </div>
+            <div class="task-item">
+              <div class="task-check done"></div>
+              <div>
+                <div class="task-text done">Subir póliza actual de seguro — C/ Tarragona</div>
+                <div class="task-meta">Completado hace 2 días</div>
+              </div>
+              <span class="badge badge-green task-priority">Hecho</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PANEL CLIENTE (Administrador fincas)
+══════════════════════════════════ -->
+<div id="screen-client" class="screen">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#E1F5EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span class="sidebar-logo-text">Trovi</span>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar avatar-client">N</div>
+      <div>
+        <div class="user-name">Nouambit Immobles</div>
+        <div class="user-role">Cliente · Administrador</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Mis comunidades</div>
+      <div class="nav-item active"><i class="ti ti-layout-dashboard"></i>Resumen</div>
+      <div class="nav-item"><i class="ti ti-building"></i>Mis comunidades<span class="nav-badge">4</span></div>
+      <div class="nav-item"><i class="ti ti-file-export"></i>Informes</div>
+      <div class="nav-item"><i class="ti ti-chart-bar"></i>Ahorros conseguidos</div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="goTo('login')"><i class="ti ti-logout"></i>Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Estado de expedientes</div>
+        <div class="topbar-sub">Nouambit Immobles · 4 comunidades</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn-action btn-ghost"><i class="ti ti-download"></i>Descargar informes</button>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <!-- Stats cliente -->
+      <div class="stats-grid stats-grid-3 fade-up">
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="ti ti-building"></i></div>
+          <div class="stat-value">4</div>
+          <div class="stat-label">Comunidades en auditoría</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="ti ti-trending-down"></i></div>
+          <div class="stat-value green">19.300€</div>
+          <div class="stat-label">Ahorro total conseguido</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-gray"><i class="ti ti-file-check"></i></div>
+          <div class="stat-value">2 / 4</div>
+          <div class="stat-label">Expedientes completados</div>
+        </div>
+      </div>
+
+      <!-- Expedientes con progreso detallado -->
+      <div class="fade-up fade-up-1">
+
+        <!-- Expediente 1 — Completado -->
+        <div class="panel" style="margin-bottom:14px;">
+          <div class="panel-header">
+            <div class="panel-title"><i class="ti ti-building"></i>C/ Tarragona, 12 — 28 viviendas</div>
+            <span class="badge badge-green"><i class="ti ti-circle-check"></i>Completado</span>
+          </div>
+          <div class="panel-body">
+            <div class="exp-stats">
+              <div class="exp-stat"><div class="exp-stat-val">40.000€</div><div class="exp-stat-lbl">Presupuesto anual</div></div>
+              <div class="exp-stat"><div class="exp-stat-val green">6.300€</div><div class="exp-stat-lbl">Ahorro conseguido</div></div>
+              <div class="exp-stat"><div class="exp-stat-val">15,7%</div><div class="exp-stat-lbl">% de reducción</div></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:4px;">
+              <button class="btn-action btn-primary-sm" style="font-size:12px;padding:7px 14px;"><i class="ti ti-file-pdf"></i>Descargar informe PDF</button>
+              <button class="btn-action btn-ghost" style="font-size:12px;padding:7px 14px;"><i class="ti ti-file-word"></i>Descargar Word</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expediente 2 — En curso -->
+        <div class="panel" style="margin-bottom:14px;">
+          <div class="panel-header">
+            <div class="panel-title"><i class="ti ti-building"></i>C/ Reus, 7 — 15 viviendas</div>
+            <span class="badge badge-amber">En curso · 57%</span>
+          </div>
+          <div class="panel-body">
+            <div style="margin-bottom:14px;">
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--gray-500);margin-bottom:6px;"><span>Progreso del expediente</span><span>4 de 7 documentos completados</span></div>
+              <div class="progress-bar" style="height:8px;"><div class="progress-fill amber" style="width:57%"></div></div>
+            </div>
+            <div style="font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:10px;">Estado por partida:</div>
+            <div class="milestone">
+              <div class="milestone-dot m-done"><i class="ti ti-check" style="font-size:12px;"></i></div>
+              <div class="milestone-text"><div class="milestone-title">Limpieza — Revisado</div><div class="milestone-sub">3 presupuestos comparados · Ahorro estimado: 1.800€</div></div>
+              <span class="badge badge-green">Listo</span>
+            </div>
+            <div class="milestone">
+              <div class="milestone-dot m-done"><i class="ti ti-check" style="font-size:12px;"></i></div>
+              <div class="milestone-text"><div class="milestone-title">Seguro — Revisado</div><div class="milestone-sub">2 alternativas analizadas · Ahorro estimado: 920€</div></div>
+              <span class="badge badge-green">Listo</span>
+            </div>
+            <div class="milestone">
+              <div class="milestone-dot m-active">2</div>
+              <div class="milestone-text"><div class="milestone-title">Ascensor — En proceso</div><div class="milestone-sub">Pendiente: recibir presupuesto alternativo</div></div>
+              <span class="badge badge-amber">Pendiente</span>
+            </div>
+            <div class="milestone">
+              <div class="milestone-dot m-pending">4</div>
+              <div class="milestone-text"><div class="milestone-title">Electricidad — Sin iniciar</div><div class="milestone-sub">Pendiente de revisión</div></div>
+              <span class="badge badge-gray">Sin iniciar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expediente 3 — Nueva -->
+        <div class="panel" style="margin-bottom:14px;">
+          <div class="panel-header">
+            <div class="panel-title"><i class="ti ti-building"></i>Av. Catalunya, 18 — 22 viviendas</div>
+            <span class="badge badge-blue">Recién iniciado</span>
+          </div>
+          <div class="panel-body">
+            <div class="alert alert-green" style="margin-bottom:0;">
+              <i class="ti ti-info-circle"></i>
+              <div>El expediente acaba de abrirse. En los próximos días recibirás el primer análisis del presupuesto anual.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── NAVEGACIÓN ──
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('screen-' + screen);
+  if (target) target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── LOGIN ──
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value.toLowerCase();
+  if (email.includes('admin') || email.includes('ismael')) { goTo('admin'); return; }
+  if (email.includes('worker') || email.includes('maria') || email.includes('jordi')) { goTo('worker'); return; }
+  if (email.includes('client') || email.includes('nouambit') || email.includes('fincas')) { goTo('client'); return; }
+  // Por defecto admin para demo
+  goTo('admin');
+}
+
+// ── RECUPERAR CONTRASEÑA ──
+function showForgot() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('forgotPanel').classList.add('active');
+  document.getElementById('forgotConfirm').classList.remove('active');
+}
+function showForgotConfirm() {
+  document.getElementById('forgotPanel').classList.remove('active');
+  document.getElementById('forgotConfirm').classList.add('active');
+}
+function showLogin() {
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('forgotPanel').classList.remove('active');
+  document.getElementById('forgotConfirm').classList.remove('active');
+}
+
+// ── TASKS ──
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('task-check') && !e.target.classList.contains('done')) {
+    e.target.classList.add('done');
+    const text = e.target.nextElementSibling?.querySelector('.task-text');
+    if (text) text.classList.add('done');
+    const badge = e.target.closest('.task-item')?.querySelector('.task-priority');
+    if (badge) { badge.className = 'badge badge-green task-priority'; badge.textContent = 'Hecho'; }
+  }
+});
+
+// Enter en login
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('screen-login').classList.contains('active')) {
+    handleLogin();
+  }
+});
+</script>
+</body>
+</html>
